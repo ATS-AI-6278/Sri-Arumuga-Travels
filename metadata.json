@@ -1,0 +1,6 @@
+{
+  "name": "Sri Arumuga Travels",
+  "description": "A premium, cinematic digital brand experience for Sri Arumuga Travels featuring immersive scroll-driven journey visualizer and seamless direct contact.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
