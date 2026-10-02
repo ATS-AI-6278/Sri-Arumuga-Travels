@@ -4,7 +4,7 @@ import { BRAND } from '../lib/content';
 
 export const SiteFooter: React.FC = () => {
   return (
-    <footer className="relative z-10 border-t border-white/10 px-5 sm:px-8 lg:px-12 py-12 pb-28 md:pb-12">
+    <footer className="relative z-10 border-t border-white/[0.07] px-5 sm:px-8 lg:px-12 py-14 pb-28 md:pb-14 bg-[color-mix(in_srgb,var(--color-ink)_96%,transparent)]">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row md:items-start justify-between gap-8">
         <div>
           <p className="font-display text-lg tracking-[0.16em] uppercase text-[var(--color-gold)]">
@@ -41,6 +41,9 @@ export const SiteFooter: React.FC = () => {
             </a>
             <a href="#services" className="block text-white/80 hover:text-[var(--color-gold)] mt-1">
               Services
+            </a>
+            <a href="#destinations" className="block text-white/80 hover:text-[var(--color-gold)] mt-1">
+              Destinations
             </a>
           </div>
         </div>

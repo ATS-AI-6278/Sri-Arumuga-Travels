@@ -19,12 +19,13 @@ const SECTION_IDS = ['hero', 'services', 'destinations', 'trust', 'story', 'enqu
 export default function App() {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [contactModalOpen, setContactModalOpen] = useState(false);
+  const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [enquiryDestination, setEnquiryDestination] = useState('');
   const [canvasEnabled, setCanvasEnabled] = useState(false);
   const enquiryFormRef = useRef<HTMLFormElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
   const sectionIds = useMemo(() => SECTION_IDS, []);
-  const activeSection = useScrollSpy(sectionIds);
+  const activeSection = useScrollSpy(sectionIds, mobileNavOpen || contactModalOpen);
 
   useEffect(() => {
     if (reducedMotion) {
@@ -39,15 +40,22 @@ export default function App() {
   }, [reducedMotion]);
 
   useEffect(() => {
+    let frame = 0;
     const handleScroll = () => {
-      const scrollY = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-      const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
-      setScrollProgress(progress);
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(() => {
+        const scrollY = window.scrollY;
+        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+        const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
+        setScrollProgress(progress);
+      });
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     handleScroll();
-    return () => window.removeEventListener('scroll', handleScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   const scrollToEnquire = useCallback(
@@ -67,18 +75,25 @@ export default function App() {
     [reducedMotion]
   );
 
+  const hideSticky = contactModalOpen || mobileNavOpen;
+
   return (
     <div className="relative min-h-screen w-full bg-[var(--color-ink)] text-[var(--color-cream)]">
-      <a href="#hero" className="skip-link">
+      <a href="#main-content" className="skip-link">
         Skip to content
       </a>
       <SeoSchema />
 
       <CinematicCanvasLazy scrollProgress={scrollProgress} enabled={canvasEnabled} />
 
-      <Navigation activeSection={activeSection} onEnquiryClick={() => scrollToEnquire()} />
+      <Navigation
+        activeSection={activeSection}
+        onEnquiryClick={() => scrollToEnquire()}
+        mobileOpen={mobileNavOpen}
+        onMobileOpenChange={setMobileNavOpen}
+      />
 
-      <main className="relative z-10 w-full flex flex-col">
+      <main id="main-content" className="relative z-10 w-full flex flex-col">
         <HeroSection onEnquiryClick={() => scrollToEnquire()} />
         <ServicesSection onEnquiryClick={() => scrollToEnquire()} />
         <DestinationsSection onEnquireRoute={(dest) => scrollToEnquire(dest)} />
@@ -88,7 +103,10 @@ export default function App() {
       </main>
 
       <SiteFooter />
-      <StickyMobileCTA onEnquiryClick={() => setContactModalOpen(true)} />
+      <StickyMobileCTA
+        hidden={hideSticky}
+        onEnquiryClick={() => setContactModalOpen(true)}
+      />
       <ContactModal
         isOpen={contactModalOpen}
         onClose={() => setContactModalOpen(false)}

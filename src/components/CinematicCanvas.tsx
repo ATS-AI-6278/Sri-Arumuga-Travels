@@ -239,11 +239,12 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       alpha: false,
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.05;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -497,12 +498,14 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
 
     // 10. Natural Animation Loop
     let animationFrameId: number;
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
+    timer.connect(document);
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
-      const elapsed = clock.getElapsedTime();
+      timer.update();
+      const delta = timer.getDelta();
+      const elapsed = timer.getElapsed();
 
       // Highway subtle suspension breathing (disabled in studio inspection)
       if (etiosGroupRef.current) {
@@ -541,6 +544,7 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       window.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('wheel', onWheel);
       resizeObserver.disconnect();
+      timer.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);

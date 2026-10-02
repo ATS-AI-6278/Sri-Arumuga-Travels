@@ -1,31 +1,22 @@
 # Sri Arumuga Travels
 
-Premium marketing site for small-car / taxi travel from **Srivilliputtur, Tamil Nadu** to destinations across India.
+Premium single-page site for small-car / taxi travel from **Srivilliputtur, Tamil Nadu** across India.
 
-## Stack
-
-- Vite + React 19 + TypeScript
-- Tailwind CSS v4
-- Motion-friendly UI with `prefers-reduced-motion` support
-- Optional Three.js cinematic sedan backdrop on desktop (disabled when reduced motion is preferred)
-
-## Contact model
-
-No fake booking backend. Conversion paths:
-
-1. Call
-2. WhatsApp
-3. Enquiry form (client validation → WhatsApp message)
-
-## Scripts
+## Preview
 
 ```bash
 bun install
+bun run dev   # http://localhost:5173 (0.0.0.0)
 bun run lint
 bun run build
-bun run dev
 ```
 
-## Branch
+## Conversion
 
-`feature/premium-travel-website-redesign`
+Call · WhatsApp · Enquiry form (WhatsApp handoff). No booking backend.
+
+## Notes
+
+- Desktop: lazy Three.js cinematic sedan backdrop (respects `prefers-reduced-motion`)
+- Mobile: sticky Call / WhatsApp / Enquire bar
+- Favicon: `/public/favicon.svg`

@@ -1,12 +1,14 @@
-import React, { useId, useState } from 'react';
+import React, { useEffect, useId, useState } from 'react';
 import { CheckCircle2, AlertCircle, Loader2, MessageCircle, Phone } from 'lucide-react';
 import {
   CONTACT_DATA,
   buildEnquiryWhatsAppMessage,
+  isValidIndianMobile,
   telHref,
   whatsappHref,
   type EnquiryPayload,
 } from '../lib/contact';
+import { Reveal } from './Reveal';
 
 type FormStatus = 'idle' | 'loading' | 'success' | 'error';
 
@@ -36,9 +38,8 @@ function validate(form: EnquiryPayload): FieldErrors {
   if (!form.name.trim() || form.name.trim().length < 2) {
     errors.name = 'Please share your name.';
   }
-  const digits = form.phone.replace(/\D/g, '');
-  if (digits.length < 10) {
-    errors.phone = 'Enter a valid 10-digit mobile number.';
+  if (!isValidIndianMobile(form.phone)) {
+    errors.phone = 'Enter a valid 10-digit Indian mobile number.';
   }
   if (!form.destination.trim() || form.destination.trim().length < 2) {
     errors.destination = 'Tell us where you need to go.';
@@ -59,17 +60,38 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
   const [status, setStatus] = useState<FormStatus>('idle');
   const [statusMessage, setStatusMessage] = useState('');
 
-  React.useEffect(() => {
-    if (initialDestination) {
-      setForm((prev) => ({ ...prev, destination: initialDestination }));
-    }
+  useEffect(() => {
+    // Sync destination from destination tiles (including clearing for “Anywhere”).
+    setForm((prev) => ({ ...prev, destination: initialDestination }));
+    setErrors((prev) => {
+      if (!prev.destination) return prev;
+      const next = { ...prev };
+      delete next.destination;
+      return next;
+    });
   }, [initialDestination]);
 
   const update = (key: keyof EnquiryPayload, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
+    setErrors((prev) => {
+      if (!(key in prev)) return prev;
+      const next = { ...prev };
+      delete next[key as keyof FieldErrors];
+      return next;
+    });
     if (status !== 'idle') {
       setStatus('idle');
       setStatusMessage('');
+    }
+  };
+
+  const focusFirstError = (nextErrors: FieldErrors) => {
+    const order: (keyof FieldErrors)[] = ['name', 'phone', 'destination'];
+    for (const key of order) {
+      if (!nextErrors[key]) continue;
+      const el = document.getElementById(`${formId}-${key === 'destination' ? 'destination' : key}`);
+      el?.focus();
+      break;
     }
   };
 
@@ -80,6 +102,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     if (Object.keys(nextErrors).length > 0) {
       setStatus('error');
       setStatusMessage('Please fix the highlighted fields and try again.');
+      window.setTimeout(() => focusFirstError(nextErrors), 0);
       return;
     }
 
@@ -87,12 +110,14 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     setStatusMessage('Preparing your WhatsApp enquiry…');
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 650));
+      await new Promise((resolve) => setTimeout(resolve, 450));
       const message = buildEnquiryWhatsAppMessage(form);
       const href = whatsappHref(message);
       const popup = window.open(href, '_blank', 'noopener,noreferrer');
       if (!popup) {
-        window.location.href = href;
+        // Popup blocked — navigate same tab as reliable fallback.
+        window.location.assign(href);
+        return;
       }
       setStatus('success');
       setStatusMessage(
@@ -105,9 +130,10 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
   };
 
   return (
-    <section id="enquire" className="section-shell z-10" aria-labelledby="enquire-heading">
+    <section id="enquire" className="section-shell section-band z-10" aria-labelledby="enquire-heading">
       <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
         <div className="lg:col-span-5">
+          <Reveal>
           <div className="section-marker">
             <span className="section-marker-line" aria-hidden />
             <span className="section-marker-text">Enquire</span>
@@ -123,25 +149,33 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
             Prefer to talk? Call either number — we are happy to plan by phone.
           </p>
 
-          <div className="mt-8 space-y-3">
-            <a href={telHref(CONTACT_DATA.phone1)} className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors">
+          </Reveal>
+          <Reveal delayMs={80} className="mt-8 space-y-3">
+            <a
+              href={telHref(CONTACT_DATA.phone1)}
+              className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors"
+            >
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-gold)]">Primary</p>
                 <p className="font-mono text-lg text-white mt-1">{CONTACT_DATA.formattedPhone1}</p>
               </div>
               <Phone className="w-5 h-5 text-[var(--color-gold)]" aria-hidden />
             </a>
-            <a href={telHref(CONTACT_DATA.phone2)} className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors">
+            <a
+              href={telHref(CONTACT_DATA.phone2)}
+              className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors"
+            >
               <div>
                 <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Secondary</p>
                 <p className="font-mono text-lg text-white mt-1">{CONTACT_DATA.formattedPhone2}</p>
               </div>
               <Phone className="w-5 h-5 text-white/50" aria-hidden />
             </a>
-          </div>
+          </Reveal>
         </div>
 
         <div className="lg:col-span-7">
+          <Reveal delayMs={100}>
           <form
             ref={formRef}
             onSubmit={handleSubmit}
@@ -156,15 +190,17 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-name`}
+                  name="name"
                   className="field-input"
                   autoComplete="name"
                   value={form.name}
                   onChange={(e) => update('name', e.target.value)}
                   aria-invalid={Boolean(errors.name)}
                   aria-describedby={errors.name ? `${formId}-name-err` : undefined}
+                  required
                 />
                 {errors.name && (
-                  <p id={`${formId}-name-err`} className="field-error">
+                  <p id={`${formId}-name-err`} className="field-error" role="alert">
                     {errors.name}
                   </p>
                 )}
@@ -175,6 +211,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-phone`}
+                  name="phone"
                   className="field-input"
                   inputMode="tel"
                   autoComplete="tel"
@@ -183,9 +220,10 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                   onChange={(e) => update('phone', e.target.value)}
                   aria-invalid={Boolean(errors.phone)}
                   aria-describedby={errors.phone ? `${formId}-phone-err` : undefined}
+                  required
                 />
                 {errors.phone && (
-                  <p id={`${formId}-phone-err`} className="field-error">
+                  <p id={`${formId}-phone-err`} className="field-error" role="alert">
                     {errors.phone}
                   </p>
                 )}
@@ -199,6 +237,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-pickup`}
+                  name="pickup"
                   className="field-input"
                   value={form.pickup}
                   onChange={(e) => update('pickup', e.target.value)}
@@ -210,15 +249,17 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-destination`}
+                  name="destination"
                   className="field-input"
                   placeholder="City, town, or landmark"
                   value={form.destination}
                   onChange={(e) => update('destination', e.target.value)}
                   aria-invalid={Boolean(errors.destination)}
                   aria-describedby={errors.destination ? `${formId}-dest-err` : undefined}
+                  required
                 />
                 {errors.destination && (
-                  <p id={`${formId}-dest-err`} className="field-error">
+                  <p id={`${formId}-dest-err`} className="field-error" role="alert">
                     {errors.destination}
                   </p>
                 )}
@@ -232,6 +273,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-date`}
+                  name="travelDate"
                   className="field-input"
                   placeholder="e.g. 12 Oct morning / flexible"
                   value={form.travelDate}
@@ -244,6 +286,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </label>
                 <input
                   id={`${formId}-passengers`}
+                  name="passengers"
                   className="field-input"
                   placeholder="e.g. 3 adults, 1 child"
                   value={form.passengers}
@@ -258,6 +301,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
               </label>
               <textarea
                 id={`${formId}-notes`}
+                name="notes"
                 className="field-input min-h-[96px] resize-y"
                 value={form.notes}
                 onChange={(e) => update('notes', e.target.value)}
@@ -292,7 +336,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 {status === 'loading' ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
-                    Sending…
+                    Preparing…
                   </>
                 ) : (
                   <>
@@ -313,6 +357,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
               )}
             </div>
           </form>
+          </Reveal>
         </div>
       </div>
     </section>

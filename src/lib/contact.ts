@@ -30,6 +30,22 @@ export function whatsappHref(message?: string): string {
   return `https://wa.me/91${CONTACT_DATA.phone1}?text=${encodeURIComponent(text)}`;
 }
 
+/** Normalize Indian mobile input to 10 digits when possible. */
+export function normalizeIndianMobile(phone: string): string {
+  let digits = phone.replace(/\D/g, '');
+  if (digits.startsWith('91') && digits.length >= 12) {
+    digits = digits.slice(-10);
+  } else if (digits.startsWith('0') && digits.length === 11) {
+    digits = digits.slice(1);
+  }
+  return digits;
+}
+
+export function isValidIndianMobile(phone: string): boolean {
+  const digits = normalizeIndianMobile(phone);
+  return /^[6-9]\d{9}$/.test(digits);
+}
+
 export interface EnquiryPayload {
   name: string;
   phone: string;

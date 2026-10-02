@@ -40,6 +40,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, onE
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-modal-title"
+        aria-describedby="contact-modal-desc"
         className="relative w-full max-w-md rounded-t-xl sm:rounded-md bg-[var(--color-panel-elevated)] border border-[var(--color-gold)]/35 p-6 sm:p-8 shadow-2xl"
       >
         <button
@@ -58,7 +59,7 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, onE
         <h3 id="contact-modal-title" className="font-display text-2xl text-white mt-2">
           Sri Arumuga Travels
         </h3>
-        <p className="text-sm text-[var(--color-muted)] mt-1">
+        <p id="contact-modal-desc" className="text-sm text-[var(--color-muted)] mt-1">
           Call, WhatsApp, or jump to the enquiry form.
         </p>
 

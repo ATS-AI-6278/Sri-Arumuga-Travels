@@ -2,27 +2,33 @@
 
 @layer base {
   :root {
-    --font-display: "Cormorant Garamond", "Cinzel", Georgia, serif;
-    --font-sans: "Manrope", "Outfit", system-ui, sans-serif;
+    --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+    --font-sans: "Manrope", system-ui, -apple-system, "Segoe UI", sans-serif;
 
-    --color-ink: #0c0e12;
-    --color-ink-soft: #141821;
-    --color-panel: #12161f;
-    --color-panel-elevated: #181d28;
-    --color-line: rgba(255, 255, 255, 0.1);
-    --color-line-strong: rgba(212, 175, 55, 0.45);
-    --color-gold: #d4af37;
-    --color-gold-soft: #ebd06b;
-    --color-cream: #f3efe6;
-    --color-muted: rgba(243, 239, 230, 0.68);
-    --color-faint: rgba(243, 239, 230, 0.42);
-    --color-whatsapp: #128c7e;
-    --color-whatsapp-hover: #0e7a6e;
+    --color-ink: #090b0f;
+    --color-ink-soft: #11151d;
+    --color-panel: #141922;
+    --color-panel-elevated: #1a202c;
+    --color-line: rgba(243, 239, 230, 0.1);
+    --color-line-strong: rgba(201, 162, 69, 0.42);
+    --color-gold: #c9a245;
+    --color-gold-soft: #e0c06a;
+    --color-cream: #f2eee4;
+    --color-muted: rgba(242, 238, 228, 0.7);
+    --color-faint: rgba(242, 238, 228, 0.42);
+    --color-whatsapp: #0f8a78;
+    --color-whatsapp-hover: #0c7263;
+    --color-dusk: #2a1f18;
+    --color-road: #171b24;
 
-    --radius-sm: 0.375rem;
-    --radius-md: 0.75rem;
-    --shadow-glow: 0 0 28px rgba(212, 175, 55, 0.22);
-    --header-h: 4.5rem;
+    --radius-sm: 0.3125rem;
+    --radius-md: 0.875rem;
+    --shadow-glow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(201, 162, 69, 0.16);
+    --shadow-lift: 0 18px 40px rgba(0, 0, 0, 0.35);
+    --header-h: 4.75rem;
+    --sticky-cta-h: 4.85rem;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+    --dur: 680ms;
   }
 
   html {
@@ -49,6 +55,7 @@
     color: var(--color-cream);
     background-color: var(--color-ink);
     text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 
   :focus-visible {
@@ -58,21 +65,25 @@
 
   ::selection {
     background: var(--color-gold);
-    color: #000;
+    color: #111;
   }
 
   ::-webkit-scrollbar {
-    width: 6px;
+    width: 5px;
   }
   ::-webkit-scrollbar-track {
     background: var(--color-ink);
   }
   ::-webkit-scrollbar-thumb {
-    background: #2a3140;
+    background: #2c3342;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
     background: var(--color-gold);
+  }
+
+  section[id] {
+    scroll-margin-top: calc(var(--header-h) + 0.85rem);
   }
 }
 
@@ -86,92 +97,183 @@
   }
 
   .section-shell {
-    @apply relative w-full px-5 sm:px-8 lg:px-12 py-20 sm:py-28;
+    @apply relative w-full px-5 sm:px-8 lg:px-12;
+    padding-block: clamp(4.5rem, 8vw, 7.5rem);
+  }
+
+  .section-band {
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-ink) 88%, transparent) 0%,
+        color-mix(in srgb, var(--color-ink) 94%, transparent) 40%,
+        color-mix(in srgb, var(--color-ink) 96%, transparent) 100%
+      );
+    border-top: 1px solid rgba(255, 255, 255, 0.045);
+  }
+
+  .section-band::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 12% 0%, rgba(201, 162, 69, 0.06), transparent 55%),
+      radial-gradient(ellipse 55% 45% at 90% 30%, rgba(70, 95, 130, 0.08), transparent 50%);
+  }
+
+  .section-band-alt {
+    position: relative;
+    isolation: isolate;
+    background:
+      linear-gradient(
+        180deg,
+        color-mix(in srgb, var(--color-ink-soft) 92%, transparent) 0%,
+        color-mix(in srgb, var(--color-ink) 96%, transparent) 100%
+      );
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .section-band-alt::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    background:
+      radial-gradient(ellipse 60% 50% at 85% 10%, rgba(201, 162, 69, 0.05), transparent 50%),
+      radial-gradient(ellipse 50% 40% at 10% 80%, rgba(42, 31, 24, 0.35), transparent 55%);
   }
 
   .section-marker {
-    @apply flex items-center gap-3 mb-4;
+    @apply flex items-center gap-3 mb-5;
   }
 
   .section-marker-line {
-    @apply w-8 h-px bg-[var(--color-gold)];
+    @apply w-10 h-px bg-[var(--color-gold)] opacity-80;
   }
 
   .section-marker-text {
-    @apply text-[11px] sm:text-xs uppercase tracking-[0.28em] text-[var(--color-gold)] font-semibold;
+    @apply text-[10px] sm:text-[11px] uppercase tracking-[0.3em] text-[var(--color-gold)] font-semibold;
   }
 
   .panel {
-    background: color-mix(in srgb, var(--color-panel) 92%, transparent);
+    background: color-mix(in srgb, var(--color-panel) 94%, transparent);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-md);
-    backdrop-filter: blur(16px);
+    backdrop-filter: blur(18px) saturate(1.05);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.03) inset;
+    transition:
+      transform var(--dur) var(--ease-out),
+      border-color 280ms ease,
+      box-shadow var(--dur) var(--ease-out);
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .panel-interactive:hover {
+      transform: translateY(-3px);
+      border-color: color-mix(in srgb, var(--color-gold) 35%, var(--color-line));
+      box-shadow: var(--shadow-lift);
+    }
   }
 
   .panel-strong {
-    background: color-mix(in srgb, var(--color-panel-elevated) 94%, transparent);
+    background: color-mix(in srgb, var(--color-panel-elevated) 96%, transparent);
     border: 1px solid var(--color-line-strong);
     border-radius: var(--radius-md);
-    backdrop-filter: blur(18px);
+    backdrop-filter: blur(20px) saturate(1.08);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.04) inset, var(--shadow-glow);
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-whatsapp {
+    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs sm:text-[13px] uppercase tracking-[0.16em] font-semibold;
+    border-radius: var(--radius-sm);
+    transition:
+      transform 220ms var(--ease-out),
+      background-color 220ms ease,
+      border-color 220ms ease,
+      color 220ms ease,
+      box-shadow 220ms ease;
+    will-change: transform;
+  }
+
+  @media (hover: hover) and (pointer: fine) {
+    .btn-primary:hover,
+    .btn-secondary:hover,
+    .btn-whatsapp:hover {
+      transform: translateY(-1.5px);
+    }
+
+    .btn-primary:active,
+    .btn-secondary:active,
+    .btn-whatsapp:active {
+      transform: translateY(0);
+    }
   }
 
   .btn-primary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs sm:text-sm uppercase tracking-[0.18em] font-semibold text-black transition-colors;
-    background: var(--color-gold);
-    border-radius: var(--radius-sm);
+    color: #111;
+    background: linear-gradient(180deg, var(--color-gold-soft) 0%, var(--color-gold) 100%);
     box-shadow: var(--shadow-glow);
   }
 
   .btn-primary:hover {
-    background: var(--color-gold-soft);
+    background: linear-gradient(180deg, #edd48a 0%, var(--color-gold-soft) 100%);
   }
 
   .btn-primary:disabled {
     opacity: 0.55;
     cursor: not-allowed;
     box-shadow: none;
+    transform: none;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs sm:text-sm uppercase tracking-[0.18em] font-semibold text-[var(--color-cream)] transition-colors;
-    background: rgba(255, 255, 255, 0.04);
+    color: var(--color-cream);
+    background: rgba(255, 255, 255, 0.035);
     border: 1px solid var(--color-line);
-    border-radius: var(--radius-sm);
   }
 
   .btn-secondary:hover {
-    border-color: color-mix(in srgb, var(--color-gold) 55%, transparent);
-    color: var(--color-gold);
+    border-color: color-mix(in srgb, var(--color-gold) 50%, transparent);
+    color: var(--color-gold-soft);
   }
 
   .btn-whatsapp {
-    @apply inline-flex items-center justify-center gap-2 px-6 py-3.5 text-xs sm:text-sm uppercase tracking-[0.18em] font-semibold text-white transition-colors;
-    background: var(--color-whatsapp);
-    border-radius: var(--radius-sm);
+    color: #fff;
+    background: linear-gradient(180deg, #149987 0%, var(--color-whatsapp) 100%);
   }
 
   .btn-whatsapp:hover {
-    background: var(--color-whatsapp-hover);
+    background: linear-gradient(180deg, var(--color-whatsapp) 0%, var(--color-whatsapp-hover) 100%);
   }
 
   .field-label {
-    @apply block text-[11px] uppercase tracking-[0.18em] text-[var(--color-faint)] mb-1.5 font-medium;
+    @apply block text-[10px] sm:text-[11px] uppercase tracking-[0.18em] text-[var(--color-faint)] mb-1.5 font-medium;
   }
 
   .field-input {
-    @apply w-full px-4 py-3 text-sm text-[var(--color-cream)] placeholder:text-white/30 transition-colors;
-    background: rgba(255, 255, 255, 0.04);
+    @apply w-full px-4 py-3.5 text-sm text-[var(--color-cream)] placeholder:text-white/28;
+    background: rgba(255, 255, 255, 0.035);
     border: 1px solid var(--color-line);
     border-radius: var(--radius-sm);
+    transition: border-color 200ms ease, background-color 200ms ease, box-shadow 200ms ease;
   }
 
   .field-input:focus {
     outline: none;
     border-color: var(--color-gold);
+    background: rgba(255, 255, 255, 0.05);
+    box-shadow: 0 0 0 3px rgba(201, 162, 69, 0.12);
   }
 
   .field-input[aria-invalid="true"] {
-    border-color: #e07a7a;
+    border-color: #d97a7a;
   }
 
   .field-error {
@@ -179,17 +281,121 @@
   }
 
   .skip-link {
-    @apply sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--color-gold)] focus:text-black focus:rounded-sm;
+    @apply sr-only focus:not-sr-only focus:absolute focus:top-3 focus:left-3 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[var(--color-gold)] focus:text-black focus:rounded-sm focus:font-semibold;
   }
 
   .text-balance {
     text-wrap: balance;
   }
 
+  /* Photographic dusk-road atmosphere (no stock photos) */
   .ambient-fallback {
     background:
-      radial-gradient(ellipse 80% 50% at 70% 40%, rgba(212, 175, 55, 0.08), transparent 55%),
-      radial-gradient(ellipse 60% 40% at 20% 70%, rgba(80, 110, 160, 0.12), transparent 50%),
-      linear-gradient(165deg, #0a0c11 0%, #121722 45%, #0c0e12 100%);
+      radial-gradient(ellipse 90% 60% at 72% 38%, rgba(201, 162, 69, 0.11), transparent 52%),
+      radial-gradient(ellipse 55% 45% at 18% 72%, rgba(90, 110, 150, 0.16), transparent 55%),
+      radial-gradient(ellipse 40% 30% at 40% 20%, rgba(255, 180, 120, 0.05), transparent 50%),
+      linear-gradient(168deg, #07090d 0%, #12131a 38%, #1a1512 68%, #0a0c10 100%);
+  }
+
+  .ambient-fallback::after,
+  .film-grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.045;
+    background-image: url("/grain.svg");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
+  }
+
+  .ambient-fallback {
+    position: relative;
+  }
+
+  /* Scroll / mount reveals — transform + opacity only */
+  .reveal {
+    opacity: 0;
+    transform: translate3d(0, 1.15rem, 0);
+    transition:
+      opacity var(--dur) var(--ease-out),
+      transform var(--dur) var(--ease-out);
+    transition-delay: var(--reveal-delay, 0ms);
+    will-change: opacity, transform;
+  }
+
+  .reveal.is-visible {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .reveal {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .hero-vignette {
+    background:
+      linear-gradient(180deg, rgba(9, 11, 15, 0.55) 0%, transparent 28%, transparent 58%, rgba(9, 11, 15, 0.88) 100%),
+      radial-gradient(ellipse 85% 70% at 50% 45%, transparent 20%, rgba(9, 11, 15, 0.55) 100%);
+  }
+
+  .hero-headline {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.05;
+    font-size: clamp(2.35rem, 7.2vw, 4.75rem);
+  }
+
+  .hero-headline em {
+    font-style: italic;
+    font-weight: 500;
+    color: color-mix(in srgb, var(--color-cream) 78%, var(--color-gold));
+  }
+
+  @keyframes hero-enter {
+    from {
+      opacity: 0;
+      transform: translate3d(0, 1.1rem, 0);
+    }
+    to {
+      opacity: 1;
+      transform: translate3d(0, 0, 0);
+    }
+  }
+
+  .hero-enter {
+    animation: hero-enter var(--dur) var(--ease-out) both;
+    animation-delay: var(--hero-delay, 0ms);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .hero-enter {
+      animation: none;
+      opacity: 1;
+      transform: none;
+    }
+  }
+
+  .canvas-grade {
+    background:
+      radial-gradient(ellipse 75% 65% at 60% 45%, transparent 15%, rgba(9, 11, 15, 0.42) 72%, rgba(9, 11, 15, 0.78) 100%),
+      linear-gradient(180deg, rgba(9, 11, 15, 0.35) 0%, transparent 22%, transparent 55%, rgba(9, 11, 15, 0.55) 100%),
+      linear-gradient(90deg, rgba(9, 11, 15, 0.55) 0%, transparent 38%, transparent 70%, rgba(9, 11, 15, 0.25) 100%);
+    mix-blend-mode: normal;
+  }
+
+  .canvas-grade::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    opacity: 0.07;
+    background-image: url("/grain.svg");
+    background-size: 160px 160px;
+    mix-blend-mode: soft-light;
   }
 }
