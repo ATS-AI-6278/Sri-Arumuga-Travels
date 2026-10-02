@@ -26,15 +26,18 @@ export const TrustSection: React.FC = () => {
           <figure className="fleet-card card overflow-hidden">
             <div className="grid md:grid-cols-12 gap-0 items-stretch">
               <div className="md:col-span-7 relative min-h-[14rem] sm:min-h-[18rem] bg-[var(--color-ink)]">
-                <img
-                  src="/fleet-scene.webp"
-                  alt={t.trust.fleetAlt}
-                  width={1280}
-                  height={720}
-                  className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source srcSet="/fleet-scene.webp" type="image/webp" />
+                  <img
+                    src="/fleet-scene.png"
+                    alt={t.trust.fleetAlt}
+                    width={1672}
+                    height={941}
+                    className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <figcaption className="md:col-span-5 flex flex-col justify-center gap-3 p-6 sm:p-8 border-t md:border-t-0 md:border-l border-[var(--color-line)] bg-[var(--color-surface)]">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent-text)]">
