@@ -1,24 +1,21 @@
-Vehicle & scene photography credits (adapted for Sri Arumuga Travels)
+Vehicle & scene photography credits — Sri Arumuga Travels
 
-hero-scene.webp / hero-scene.jpg / hero-highway.webp / fleet-scene.webp
-  Source: "Toyota Etios (2019) (52710357102).jpg" — Wikimedia Commons
-  Author: see Commons file page (Flickr upload; CC BY-SA)
-  License: CC BY-SA 2.0 (or as stated on the Commons file page)
-  https://commons.wikimedia.org/wiki/File:Toyota_Etios_(2019)_(52710357102).jpg
-  Adaptations: body paint shifted from red toward dark metallic grey/black;
-  cinematic contrast/vignette grade; left-side darkening for headline readability.
-  The car remains in its original highway environment (not a floating cutout).
+hero-scene.webp / hero-scene.jpg / hero-highway.webp
+  AI-generated travel photography (cinematic dark grey Toyota Etios sedan on a
+  scenic mountain road at golden hour). Created for this site’s hero section.
+  Not a stock photo of a real trip; illustrative of the road-travel mood.
 
-etios-gxd-grey.webp / etios-xls-grey.webp (legacy cutouts; unused in hero)
-  Source: "Toyota Etios 1.5 XLS 2015.jpg" — Wikimedia Commons / RL GNZLZ — CC BY-SA 2.0
-  https://commons.wikimedia.org/wiki/File:Toyota_Etios_1.5_XLS_2015.jpg
+fleet-scene.webp / fleet-scene.jpg
+  AI-generated travel photography (dark grey Etios on a palm-lined scenic road
+  at golden hour). Used in the “On the road” / fleet card.
 
-etios-gxd-grey-fleet.webp / etios-india-grey.webp (legacy)
-  Source: "Toyota Etios top left front.jpg" — Chennai, India — CC BY 2.0
-  https://commons.wikimedia.org/wiki/File:Toyota_Etios_top_left_front.jpg
+Legacy Wikimedia-adapted cutouts (unused in current hero/fleet UI; retained in public/):
+  etios-gxd-grey.webp / etios-xls-grey.webp
+    Adapted from “Toyota Etios 1.5 XLS 2015.jpg” — Wikimedia Commons — CC BY-SA 2.0
+    https://commons.wikimedia.org/wiki/File:Toyota_Etios_1.5_XLS_2015.jpg
+  etios-gxd-grey-fleet.webp / etios-india-grey.webp
+    Adapted from “Toyota Etios top left front.jpg” (Chennai) — CC BY 2.0
+    https://commons.wikimedia.org/wiki/File:Toyota_Etios_top_left_front.jpg
 
-
-Commercial Platinum Etios dealer photos (e.g. carz4sale.in) were used only as
-visual reference for colour/stance — not copied into the site.
-
-Attribution retained per CC BY / CC BY-SA. See linked Commons pages for full terms.
+Commercial Platinum Etios dealer photos were used only as visual reference
+during earlier redesign passes — not shipped as site assets.

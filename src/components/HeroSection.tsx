@@ -14,7 +14,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
       className="hero-cinematic relative min-h-[100svh] w-full overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Full-bleed road scene — dark metallic Etios on highway */}
+      {/* Full-bleed AI travel scene — dark grey Etios on a scenic road */}
       <div className="hero-scene absolute inset-0" aria-hidden>
         <picture>
           <source srcSet="/hero-scene.webp" type="image/webp" />
@@ -22,8 +22,8 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
             src="/hero-scene.jpg"
             alt=""
             className="hero-scene-img"
-            width={2400}
-            height={1350}
+            width={1280}
+            height={720}
             decoding="async"
             fetchPriority="high"
           />
@@ -141,7 +141,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
 
       {/* Visually hidden alt for the scene photo */}
       <span className="sr-only">
-        Dark metallic Toyota Etios sedan travelling on a highway — the kind of quiet road journey we drive from Srivilliputtur.
+        Dark grey Toyota Etios sedan on a scenic road at golden hour — the kind of quiet journey we drive from Srivilliputtur.
       </span>
     </section>
   );

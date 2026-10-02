@@ -29,9 +29,9 @@ export const TrustSection: React.FC = () => {
               <div className="md:col-span-7 relative min-h-[14rem] sm:min-h-[18rem] bg-[var(--color-ink)]">
                 <img
                   src="/fleet-scene.webp"
-                  alt="Dark metallic Toyota Etios sedan on the highway"
-                  width={2400}
-                  height={1350}
+                  alt="Dark grey Toyota Etios sedan on a scenic palm-lined road"
+                  width={1280}
+                  height={720}
                   className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
                   loading="lazy"
                   decoding="async"

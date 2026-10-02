@@ -353,6 +353,13 @@
   .hero-cinematic {
     background: #1a1614;
   }
+  .hero-cinematic h1,
+  .hero-cinematic .eyebrow-on-dark {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.35), 0 8px 24px rgba(0, 0, 0, 0.25);
+  }
+  .hero-cinematic p {
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  }
   .hero-scene {
     pointer-events: none;
   }
@@ -362,26 +369,31 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
-    object-position: 62% 55%;
+    /* Bias toward car + road; keep golden hills visible on the right */
+    object-position: 35% 55%;
   }
   @media (min-width: 1024px) {
     .hero-scene-img {
-      object-position: 68% 50%;
+      object-position: 42% 50%;
     }
   }
   .hero-scene-shade {
     position: absolute;
     inset: 0;
     background:
+      /* Strong left panel for white headline on dark grey car */
       linear-gradient(
-        105deg,
-        rgba(18, 14, 12, 0.88) 0%,
-        rgba(18, 14, 12, 0.72) 32%,
-        rgba(18, 14, 12, 0.35) 55%,
-        rgba(18, 14, 12, 0.2) 72%,
-        rgba(18, 14, 12, 0.45) 100%
+        100deg,
+        rgba(12, 10, 9, 0.92) 0%,
+        rgba(12, 10, 9, 0.82) 28%,
+        rgba(12, 10, 9, 0.45) 48%,
+        rgba(12, 10, 9, 0.12) 68%,
+        rgba(12, 10, 9, 0.28) 100%
       ),
-      linear-gradient(to top, rgba(18, 14, 12, 0.55) 0%, transparent 42%);
+      /* Bottom readability strip */
+      linear-gradient(to top, rgba(12, 10, 9, 0.62) 0%, rgba(12, 10, 9, 0.15) 28%, transparent 48%),
+      /* Soft top for nav contrast */
+      linear-gradient(to bottom, rgba(12, 10, 9, 0.45) 0%, transparent 22%);
   }
   .hero-scene-grain {
     position: absolute;
