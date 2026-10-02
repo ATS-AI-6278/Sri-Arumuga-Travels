@@ -26,5 +26,7 @@
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
-  }
+  },
+  "description": "Sri Arumuga Travels \u2014 small-car travel from Srivilliputtur across India (Vite + React + TypeScript + Tailwind)",
+  "packageManager": "bun@1.4.2"
 }
