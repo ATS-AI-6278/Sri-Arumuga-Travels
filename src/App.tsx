@@ -1,5 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { CinematicCanvasLazy } from './components/CinematicCanvasLazy';
+import React, { useCallback, useMemo, useRef, useState } from 'react';
 import { Navigation } from './components/Navigation';
 import { HeroSection } from './components/HeroSection';
 import { ServicesSection } from './components/ServicesSection';
@@ -17,46 +16,14 @@ import { useScrollSpy } from './hooks/useScrollSpy';
 const SECTION_IDS = ['hero', 'services', 'destinations', 'trust', 'story', 'enquire'];
 
 export default function App() {
-  const [scrollProgress, setScrollProgress] = useState(0);
   const [contactModalOpen, setContactModalOpen] = useState(false);
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
   const [enquiryDestination, setEnquiryDestination] = useState('');
-  const [canvasEnabled, setCanvasEnabled] = useState(false);
   const enquiryFormRef = useRef<HTMLFormElement | null>(null);
   const reducedMotion = usePrefersReducedMotion();
   const sectionIds = useMemo(() => SECTION_IDS, []);
   const activeSection = useScrollSpy(sectionIds, mobileNavOpen || contactModalOpen);
-
-  useEffect(() => {
-    if (reducedMotion) {
-      setCanvasEnabled(false);
-      return;
-    }
-    const mq = window.matchMedia('(min-width: 768px)');
-    const sync = () => setCanvasEnabled(mq.matches);
-    sync();
-    mq.addEventListener('change', sync);
-    return () => mq.removeEventListener('change', sync);
-  }, [reducedMotion]);
-
-  useEffect(() => {
-    let frame = 0;
-    const handleScroll = () => {
-      cancelAnimationFrame(frame);
-      frame = requestAnimationFrame(() => {
-        const scrollY = window.scrollY;
-        const docHeight = document.documentElement.scrollHeight - window.innerHeight;
-        const progress = docHeight > 0 ? Math.min(1, Math.max(0, scrollY / docHeight)) : 0;
-        setScrollProgress(progress);
-      });
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll();
-    return () => {
-      cancelAnimationFrame(frame);
-      window.removeEventListener('scroll', handleScroll);
-    };
-  }, []);
+  const hideSticky = contactModalOpen || mobileNavOpen;
 
   const scrollToEnquire = useCallback(
     (destination?: string) => {
@@ -70,16 +37,14 @@ export default function App() {
         enquiryFormRef.current
           ?.querySelector<HTMLInputElement>('input')
           ?.focus({ preventScroll: true });
-      }, reducedMotion ? 0 : 450);
+      }, reducedMotion ? 0 : 400);
     },
     [reducedMotion]
   );
 
-  const hideSticky = contactModalOpen || mobileNavOpen;
-
   return (
     <div
-      className={`relative min-h-screen w-full bg-[var(--color-ink)] text-[var(--color-cream)] ${
+      className={`relative min-h-screen w-full bg-[var(--color-bg)] text-[var(--color-ink)] ${
         hideSticky ? '' : 'has-mobile-sticky'
       }`}
     >
@@ -87,8 +52,6 @@ export default function App() {
         Skip to content
       </a>
       <SeoSchema />
-
-      <CinematicCanvasLazy scrollProgress={scrollProgress} enabled={canvasEnabled} />
 
       <Navigation
         activeSection={activeSection}

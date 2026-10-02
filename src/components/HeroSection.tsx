@@ -1,5 +1,5 @@
 import React from 'react';
-import { Phone, MessageCircle } from 'lucide-react';
+import { Phone, MessageCircle, ArrowDown } from 'lucide-react';
 import { CONTACT_DATA, telHref, whatsappHref } from '../lib/contact';
 import { BRAND } from '../lib/content';
 
@@ -11,117 +11,138 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
   return (
     <section
       id="hero"
-      className="relative min-h-[100svh] w-full flex flex-col justify-between z-10 film-grain"
+      className="hero-cinematic relative min-h-[100svh] w-full overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      <div className="absolute inset-0 hero-vignette pointer-events-none" aria-hidden />
-      <div
-        className="absolute inset-x-0 bottom-0 h-28 sm:h-40 pointer-events-none bg-gradient-to-t from-[var(--color-ink)]/80 via-[var(--color-ink)]/35 to-transparent"
-        aria-hidden
-      />
+      {/* Full-bleed AI travel scene — dark grey Etios on a scenic road */}
+      <div className="hero-scene absolute inset-0" aria-hidden>
+        <picture>
+          <source srcSet="/hero-scene.webp" type="image/webp" />
+          <img
+            src="/hero-scene.jpg"
+            alt=""
+            className="hero-scene-img"
+            width={1280}
+            height={720}
+            decoding="async"
+            fetchPriority="high"
+          />
+        </picture>
+        <div className="hero-scene-shade" />
+        <div className="hero-scene-grain" />
+      </div>
 
-      <div className="relative flex-1 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-28 sm:pt-32 pb-6 sm:pb-10">
-        <div className="max-w-7xl mx-auto w-full hero-enter" style={{ animationDelay: '40ms' }}>
-          <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/45 px-3.5 py-1.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
-            <span className="relative flex h-2 w-2" aria-hidden>
-              <span className="absolute inset-0 rounded-full bg-[var(--color-gold)] opacity-35 motion-safe:animate-ping" />
-              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-gold)]" />
-            </span>
-            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-white/70">
-              Based in {BRAND.homeBase}
-            </span>
-          </div>
+      <div className="hero-inner relative z-10 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8">
+        <div className="max-w-6xl mx-auto w-full rise-in" style={{ animationDelay: '40ms' }}>
+          <span className="eyebrow eyebrow-on-dark">
+            <span className="eyebrow-dot" aria-hidden />
+            Based in {BRAND.homeBase}
+          </span>
         </div>
 
-        <div className="max-w-7xl mx-auto w-full my-auto py-12 sm:py-16">
-          <p
-            className="font-display text-[13px] sm:text-sm tracking-[0.32em] uppercase text-[var(--color-gold)] mb-5 sm:mb-6 hero-enter"
-            style={{ animationDelay: '100ms' }}
-          >
-            {BRAND.name}
-          </p>
-
-          <h1
-            id="hero-heading"
-            className="hero-headline text-[var(--color-cream)] max-w-[14ch] sm:max-w-[16ch] text-balance hero-enter"
-            style={{ animationDelay: '160ms' }}
-          >
-            Travel from Srivilliputtur to <em>Anywhere in India</em>
-          </h1>
-
-          <p
-            className="mt-6 sm:mt-7 text-[15px] sm:text-lg md:text-xl text-[var(--color-muted)] max-w-xl leading-relaxed font-light hero-enter"
-            style={{ animationDelay: '240ms' }}
-          >
-            Quiet sedan journeys for families, pilgrims, and everyday travellers —
-            planned by phone or WhatsApp before you leave town.
-          </p>
-
-          <div
-            className="mt-9 sm:mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 hero-enter"
-            style={{ animationDelay: '320ms' }}
-          >
-            <a href={telHref(CONTACT_DATA.phone1)} className="btn-primary min-h-12 sm:min-h-0">
-              <Phone className="w-4 h-4" aria-hidden />
-              Call now
-            </a>
-            <a
-              href={whatsappHref()}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-whatsapp min-h-12 sm:min-h-0"
+        <div className="max-w-6xl mx-auto w-full my-auto py-8 sm:py-10 lg:py-12">
+          <div className="max-w-xl lg:max-w-lg xl:max-w-xl">
+            <p
+              className="text-[13px] sm:text-sm font-semibold tracking-[0.18em] uppercase text-[var(--color-accent-soft)] mb-3 sm:mb-4 rise-in"
+              style={{ animationDelay: '90ms' }}
             >
-              <MessageCircle className="w-4 h-4" aria-hidden />
-              WhatsApp
-            </a>
-            <button type="button" onClick={onEnquiryClick} className="btn-secondary min-h-12 sm:min-h-0">
-              Send an enquiry
-            </button>
+              {BRAND.name}
+            </p>
+            <h1
+              id="hero-heading"
+              className="font-display font-semibold text-[clamp(2.25rem,5.8vw,3.9rem)] leading-[1.1] tracking-[-0.028em] text-white max-w-[15ch] text-balance rise-in"
+              style={{ animationDelay: '140ms' }}
+            >
+              Travel from Srivilliputtur to{' '}
+              <span className="italic font-medium text-[var(--color-accent-soft)]">
+                anywhere in India
+              </span>
+            </h1>
+            <p
+              className="mt-5 sm:mt-6 max-w-md text-[1.02rem] sm:text-lg text-white/78 leading-[1.65] rise-in"
+              style={{ animationDelay: '210ms' }}
+            >
+              Quiet sedan journeys for families, pilgrims, and everyday travellers —
+              planned by phone or WhatsApp before you leave town.
+            </p>
+
+            <div
+              className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 rise-in"
+              style={{ animationDelay: '280ms' }}
+            >
+              <a href={telHref(CONTACT_DATA.phone1)} className="btn btn-primary min-h-12">
+                <Phone className="w-4 h-4" aria-hidden />
+                Call now
+              </a>
+              <a
+                href={whatsappHref()}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="btn btn-whatsapp min-h-12"
+              >
+                <MessageCircle className="w-4 h-4" aria-hidden />
+                WhatsApp
+              </a>
+              <button
+                type="button"
+                onClick={onEnquiryClick}
+                className="btn btn-on-dark min-h-12 hidden sm:inline-flex"
+              >
+                Send an enquiry
+              </button>
+              <button
+                type="button"
+                onClick={onEnquiryClick}
+                className="sm:hidden text-sm font-semibold text-[var(--color-accent-soft)] underline-offset-4 hover:underline py-1 self-start"
+              >
+                Or send an enquiry →
+              </button>
+            </div>
+
+            <p
+              className="mt-5 text-sm text-white/55 rise-in"
+              style={{ animationDelay: '340ms' }}
+            >
+              <a
+                className="text-white/85 hover:text-[var(--color-accent-soft)] font-medium tabular-nums"
+                href={telHref(CONTACT_DATA.phone1)}
+              >
+                {CONTACT_DATA.formattedPhone1}
+              </a>
+              <span className="mx-2 text-white/35" aria-hidden>
+                ·
+              </span>
+              <a
+                className="text-white/85 hover:text-[var(--color-accent-soft)] font-medium tabular-nums"
+                href={telHref(CONTACT_DATA.phone2)}
+              >
+                {CONTACT_DATA.formattedPhone2}
+              </a>
+            </p>
           </div>
-
-          <p
-            className="mt-5 text-xs sm:text-sm text-[var(--color-faint)] hero-enter"
-            style={{ animationDelay: '380ms' }}
-          >
-            <a
-              className="text-white/80 hover:text-[var(--color-gold)] font-mono tracking-wide transition-colors"
-              href={telHref(CONTACT_DATA.phone1)}
-            >
-              {CONTACT_DATA.formattedPhone1}
-            </a>
-            <span className="mx-2.5 text-white/20" aria-hidden>
-              ·
-            </span>
-            <a
-              className="text-white/80 hover:text-[var(--color-gold)] font-mono tracking-wide transition-colors"
-              href={telHref(CONTACT_DATA.phone2)}
-            >
-              {CONTACT_DATA.formattedPhone2}
-            </a>
-          </p>
         </div>
 
         <div
-          className="max-w-7xl mx-auto w-full flex items-end justify-between gap-4 hero-enter"
-          style={{ animationDelay: '460ms' }}
+          className="max-w-6xl mx-auto w-full flex items-center justify-between gap-4 rise-in"
+          style={{ animationDelay: '400ms' }}
         >
           <a
             href="#services"
-            className="group inline-flex items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/45 hover:text-[var(--color-gold)] transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/60 hover:text-[var(--color-accent-soft)] transition-colors"
           >
-            <span
-              className="w-5 h-9 rounded-full border border-white/20 group-hover:border-[var(--color-gold)]/60 flex items-start justify-center p-1.5 transition-colors"
-              aria-hidden
-            >
-              <span className="w-1 h-1.5 rounded-full bg-[var(--color-gold)] motion-safe:animate-bounce" />
-            </span>
-            Scroll to explore
+            <ArrowDown className="w-4 h-4" aria-hidden />
+            Explore
           </a>
-          <p className="hidden md:block text-[10px] uppercase tracking-[0.22em] text-white/30 max-w-[16rem] text-right leading-relaxed">
+          <p className="hidden sm:block text-xs text-white/45 tracking-wide">
             {BRAND.promise}
           </p>
         </div>
       </div>
+
+      {/* Visually hidden alt for the scene photo */}
+      <span className="sr-only">
+        Dark grey Toyota Etios sedan on a scenic road at golden hour — the kind of quiet journey we drive from Srivilliputtur.
+      </span>
     </section>
   );
 };
