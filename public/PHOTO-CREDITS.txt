@@ -19,3 +19,5 @@ Legacy Wikimedia-adapted cutouts (unused in current hero/fleet UI; retained in p
 
 Commercial Platinum Etios dealer photos were used only as visual reference
 during earlier redesign passes — not shipped as site assets.
+
+Hero plate TN 84 F 6278 appears only on the hero vehicle image (not site-wide).
