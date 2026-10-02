@@ -1,0 +1,21 @@
+# Sri Arumuga Travels
+
+> Small-car / sedan travel from Srivilliputtur, Tamil Nadu, across India.
+> Booking: Call or WhatsApp only (no app cart).
+
+## Key pages
+
+- [Home](https://sriarumugatravels.vercel.app/)
+- [Services](https://sriarumugatravels.vercel.app/services)
+- [Locations](https://sriarumugatravels.vercel.app/locations)
+- [Blog](https://sriarumugatravels.vercel.app/blog)
+- [Contact / enquire](https://sriarumugatravels.vercel.app/contact)
+- [Sitemap](https://sriarumugatravels.vercel.app/sitemap.xml)
+
+## About
+
+- Home base: Srivilliputtur, Tamil Nadu, India
+- Phones: +91 98942 20028, +91 86676 69560
+- Languages: English and Tamil (same URLs; in-page toggle)
+- Service detail pages under [/services](https://sriarumugatravels.vercel.app/services) (outstation, airport-taxi, temple-pilgrimage, local-taxi)
+- Location pages under [/locations](https://sriarumugatravels.vercel.app/locations) (srivilliputtur, madurai, chennai, bengaluru, coimbatore, rameswaram, kodaikanal, thiruvananthapuram)

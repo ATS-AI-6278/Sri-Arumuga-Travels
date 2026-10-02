@@ -17,16 +17,18 @@
     "lucide-react": "^0.546.0",
     "react": "^19.0.1",
     "react-dom": "^19.0.1",
+    "react-router-dom": "^7.18.4",
     "vite": "^8.3.0"
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
     "@types/react": "^19.3.0",
     "@types/react-dom": "^19.3.0",
+    "@types/react-router-dom": "^5.3.3",
     "autoprefixer": "^10.4.21",
     "tailwindcss": "^4.3.3",
     "typescript": "^7.0.2"
   },
-  "description": "Sri Arumuga Travels \u2014 small-car travel from Srivilliputtur across India (Vite + React + TypeScript + Tailwind)",
+  "description": "Sri Arumuga Travels — small-car travel from Srivilliputtur across India (Vite + React + TypeScript + Tailwind)",
   "packageManager": "bun@1.4.2"
 }
