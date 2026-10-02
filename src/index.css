@@ -91,7 +91,7 @@
 
   .section-shell {
     @apply relative w-full px-5 sm:px-8 lg:px-12;
-    padding-block: clamp(3.75rem, 7vw, 6.5rem);
+    padding-block: clamp(4rem, 7.5vw, 7rem);
   }
 
   .section-muted {
@@ -117,10 +117,10 @@
   .display-title {
     font-family: var(--font-display);
     font-weight: 600;
-    letter-spacing: -0.025em;
-    line-height: 1.12;
+    letter-spacing: -0.028em;
+    line-height: 1.14;
     color: var(--color-ink);
-    font-size: clamp(1.85rem, 4.5vw, 3.15rem);
+    font-size: clamp(1.9rem, 4.2vw, 3rem);
     text-wrap: balance;
   }
 
@@ -129,6 +129,7 @@
     color: var(--color-muted);
     font-weight: 400;
     max-width: 36rem;
+    letter-spacing: 0.005em;
   }
 
   .card {
@@ -332,54 +333,81 @@
   /* Photographic Etios — hero & fleet */
   .hero-car {
     isolation: isolate;
+    padding-bottom: 0.5rem;
+  }
+  .hero-car-ground {
+    position: absolute;
+    left: 6%;
+    right: 4%;
+    bottom: 8%;
+    height: 28%;
+    border-radius: 50%;
+    background:
+      radial-gradient(ellipse at center, rgba(232, 217, 200, 0.95) 0%, rgba(246, 241, 232, 0) 72%);
+    z-index: 0;
   }
   .hero-car-glow {
     position: absolute;
-    inset: 18% 8% 8% 8%;
+    inset: 12% 4% 18% 8%;
     border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(184, 92, 56, 0.14), transparent 68%);
-    filter: blur(28px);
+    background: radial-gradient(ellipse at 60% 40%, rgba(184, 92, 56, 0.16), transparent 70%);
+    filter: blur(32px);
     z-index: 0;
   }
   .hero-car-shadow {
     position: absolute;
-    left: 12%;
-    right: 12%;
-    bottom: 6%;
-    height: 14%;
+    left: 14%;
+    right: 10%;
+    bottom: 10%;
+    height: 12%;
     border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.28), transparent 72%);
-    filter: blur(10px);
+    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.32), transparent 70%);
+    filter: blur(12px);
     z-index: 0;
   }
   .hero-car-img {
-    filter: drop-shadow(0 18px 28px rgba(31, 26, 23, 0.12));
-    transform: translateY(0.25rem);
+    filter: drop-shadow(0 22px 36px rgba(31, 26, 23, 0.14));
+    transform: translateY(0.35rem);
   }
   @media (min-width: 1024px) {
     .hero-car-img {
-      transform: translateY(0.5rem) scale(1.04);
-      transform-origin: center bottom;
+      transform: translate3d(4%, 0.65rem, 0) scale(1.06);
+      transform-origin: 70% bottom;
+    }
+    .hero-car-shadow {
+      left: 18%;
+      right: 6%;
+      bottom: 8%;
+    }
+  }
+  @media (max-width: 639.98px) {
+    .hero-car {
+      margin-top: 0.25rem;
+      max-width: 22rem;
+    }
+    .hero-car-img {
+      transform: translateY(0.15rem) scale(1.02);
     }
   }
 
   .fleet-stage {
     background:
-      linear-gradient(165deg, #f8f4ec 0%, #f0e8dc 55%, #e9dfd2 100%);
+      linear-gradient(155deg, #faf6ef 0%, #f1e8dc 50%, #e8dccf 100%);
+    min-height: 14rem;
   }
   .fleet-car-shadow {
     position: absolute;
-    left: 18%;
-    right: 18%;
-    bottom: 12%;
-    height: 16%;
+    left: 16%;
+    right: 16%;
+    bottom: 14%;
+    height: 14%;
     border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.22), transparent 70%);
-    filter: blur(8px);
+    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.2), transparent 70%);
+    filter: blur(9px);
     z-index: 0;
   }
   .fleet-car-img {
-    filter: drop-shadow(0 12px 20px rgba(31, 26, 23, 0.1));
+    filter: drop-shadow(0 14px 22px rgba(31, 26, 23, 0.11));
   }
-}
 
+}

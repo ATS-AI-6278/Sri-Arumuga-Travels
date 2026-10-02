@@ -1,12 +1,27 @@
-etios-gxd-grey.webp
-  Adapted from "Toyota Etios 1.5 XS Sedan 2015.jpg" by RL GNZLZ
-  Wikimedia Commons — CC BY-SA 2.0
-  https://commons.wikimedia.org/wiki/File:Toyota_Etios_1.5_XS_Sedan_2015.jpg
-  Background removed; paint shifted to metallic grey for brand presentation.
+Vehicle photography credits (adapted for Sri Arumuga Travels)
 
-etios-gxd-grey-fleet.webp
-  Adapted from "Toyota Etios top left front.jpg" (Indian market, Chennai)
-  Photo: Lingeswaran Marimuthukumar; cropped/edited by Mr.choppers
-  Wikimedia Commons — CC BY 2.0
+etios-gxd-grey.webp  (hero)
+  Source: "Toyota Etios 1.5 XLS 2015.jpg" — Wikimedia Commons
+  Author: RL GNZLZ (Flickr) — see Commons file page for full attribution
+  License: CC BY-SA 2.0
+  https://commons.wikimedia.org/wiki/File:Toyota_Etios_1.5_XLS_2015.jpg
+  Adaptations: background removed; gentle LAB recolour toward silver/classic grey
+  to resemble India-market Platinum Etios Classic Grey / Silver Mica Metallic.
+  Note: original photo is a white Etios sedan (Latin America market body closely
+  matching the India Platinum facelift silhouette). Not an official Toyota studio
+  image. Commercial reference look compared against Platinum Etios dealer photos
+  (e.g. carz4sale.in Platinum Etios VD) — those commercial images were NOT used.
+
+etios-gxd-grey-fleet.webp  (fleet / trust card)
+  Source: "Toyota Etios top left front.jpg" — Wikimedia Commons
+  Photo: Lingeswaran Marimuthukumar (Chennai, India); cropped/edited by Mr.choppers
+  License: CC BY 2.0
   https://commons.wikimedia.org/wiki/File:Toyota_Etios_top_left_front.jpg
-  Background removed; paint shifted toward grey for brand presentation.
+  Adaptations: background removed; colour shifted toward metallic grey for brand
+  presentation. Authentic Indian-market Etios (Chennai).
+
+etios-xls-grey.webp / etios-india-grey.webp
+  Working copies of the same hero/fleet sources above (kept for rebuild convenience).
+
+We do not claim ownership of the original photographs. Attribution retained per
+CC BY / CC BY-SA. See linked Commons pages for full license text.

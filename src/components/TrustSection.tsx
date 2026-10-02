@@ -30,10 +30,10 @@ export const TrustSection: React.FC = () => {
                 <div className="fleet-car-shadow" aria-hidden />
                 <img
                   src="/etios-gxd-grey-fleet.webp"
-                  alt="Indian-market Toyota Etios sedan in a soft grey finish"
-                  width={1589}
-                  height={884}
-                  className="fleet-car-img relative z-[1] w-full h-full object-contain object-center p-6 sm:p-8"
+                  alt="Indian-market Toyota Etios sedan in metallic grey"
+                  width={1573}
+                  height={876}
+                  className="fleet-car-img relative z-[1] w-full h-full object-contain object-bottom p-5 sm:p-7 pt-8 sm:pt-10"
                   loading="lazy"
                   decoding="async"
                 />
@@ -43,11 +43,11 @@ export const TrustSection: React.FC = () => {
                   On the road
                 </p>
                 <h3 className="font-display text-2xl text-[var(--color-ink)] leading-snug">
-                  Toyota Etios sedan comfort
+                  Etios sedan comfort
                 </h3>
                 <p className="text-[15px] text-[var(--color-muted)] leading-relaxed">
-                  A calm cabin for highway stretches — room for luggage, elders, and the long quiet
-                  between towns. The kind of sedan journey that starts in Srivilliputtur.
+                  India-market Toyota Etios — a calm cabin for highway stretches, luggage, elders,
+                  and the quiet between towns. The kind of journey that starts in Srivilliputtur.
                 </p>
               </figcaption>
             </div>

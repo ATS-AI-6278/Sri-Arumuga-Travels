@@ -17,7 +17,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
     >
       <Atmosphere variant="hero" />
 
-      <div className="hero-inner relative z-10 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-28 sm:pt-32 pb-8">
+      <div className="hero-inner relative z-10 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8">
         <div className="max-w-6xl mx-auto w-full rise-in" style={{ animationDelay: '40ms' }}>
           <span className="eyebrow">
             <span className="eyebrow-dot" aria-hidden />
@@ -25,18 +25,18 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
           </span>
         </div>
 
-        <div className="max-w-6xl mx-auto w-full my-auto py-8 sm:py-10 lg:py-12">
-          <div className="grid lg:grid-cols-12 gap-8 lg:gap-10 items-center">
-            <div className="lg:col-span-6 xl:col-span-5">
+        <div className="max-w-6xl mx-auto w-full my-auto py-6 sm:py-8 lg:py-10">
+          <div className="grid lg:grid-cols-12 gap-6 lg:gap-8 xl:gap-12 items-center">
+            <div className="lg:col-span-5 xl:col-span-5 relative z-[2]">
               <p
-                className="text-sm font-semibold tracking-[0.2em] uppercase text-[var(--color-accent-text)] mb-4 rise-in"
+                className="text-[13px] sm:text-sm font-semibold tracking-[0.18em] uppercase text-[var(--color-accent-text)] mb-3 sm:mb-4 rise-in"
                 style={{ animationDelay: '90ms' }}
               >
                 {BRAND.name}
               </p>
               <h1
                 id="hero-heading"
-                className="font-display font-semibold text-[clamp(2.35rem,6.5vw,4.2rem)] leading-[1.08] tracking-[-0.03em] text-[var(--color-ink)] max-w-[14ch] sm:max-w-[16ch] text-balance rise-in"
+                className="font-display font-semibold text-[clamp(2.2rem,5.8vw,3.85rem)] leading-[1.1] tracking-[-0.028em] text-[var(--color-ink)] max-w-[15ch] text-balance rise-in"
                 style={{ animationDelay: '140ms' }}
               >
                 Travel from Srivilliputtur to{' '}
@@ -45,7 +45,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
                 </span>
               </h1>
               <p
-                className="mt-6 max-w-xl text-base sm:text-lg text-[var(--color-muted)] leading-relaxed rise-in"
+                className="mt-5 sm:mt-6 max-w-md text-[1.02rem] sm:text-lg text-[var(--color-muted)] leading-[1.65] rise-in"
                 style={{ animationDelay: '210ms' }}
               >
                 Quiet sedan journeys for families, pilgrims, and everyday travellers —
@@ -53,7 +53,7 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
               </p>
 
               <div
-                className="mt-9 flex flex-col sm:flex-row flex-wrap gap-3 rise-in"
+                className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 rise-in"
                 style={{ animationDelay: '280ms' }}
               >
                 <a href={telHref(CONTACT_DATA.phone1)} className="btn btn-primary min-h-12">
@@ -108,26 +108,24 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
             </div>
 
             <div
-              className="lg:col-span-6 xl:col-span-7 rise-in"
-              style={{ animationDelay: '220ms' }}
+              className="lg:col-span-7 xl:col-span-7 rise-in"
+              style={{ animationDelay: '200ms' }}
             >
-              <figure className="hero-car relative mx-auto max-w-xl lg:max-w-none">
+              <figure className="hero-car relative mx-auto w-full max-w-lg sm:max-w-xl lg:max-w-none lg:-mr-4 xl:-mr-8">
+                <div className="hero-car-ground" aria-hidden />
                 <div className="hero-car-glow" aria-hidden />
                 <div className="hero-car-shadow" aria-hidden />
-                <picture>
-                  <source srcSet="/etios-gxd-grey.webp" type="image/webp" />
-                  <img
-                    src="/etios-gxd-grey.webp"
-                    alt="Grey Toyota Etios sedan ready for an outstation journey"
-                    width={1548}
-                    height={1132}
-                    className="hero-car-img relative z-[1] w-full h-auto select-none"
-                    decoding="async"
-                    fetchPriority="high"
-                  />
-                </picture>
-                <figcaption className="sr-only">
-                  Photographic still of a grey Toyota Etios sedan, adapted for the road-travel story.
+                <img
+                  src="/etios-gxd-grey.webp"
+                  alt="Silver-grey Toyota Etios sedan — the kind of car we drive from Srivilliputtur"
+                  width={1600}
+                  height={794}
+                  className="hero-car-img relative z-[1] w-full h-auto select-none pointer-events-none"
+                  decoding="async"
+                  fetchPriority="high"
+                />
+                <figcaption className="mt-3 text-center lg:text-right text-[11px] tracking-wide text-[var(--color-faint)] relative z-[1]">
+                  Toyota Etios sedan · quiet highway travel
                 </figcaption>
               </figure>
             </div>
