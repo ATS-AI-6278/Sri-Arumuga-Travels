@@ -431,3 +431,52 @@
   box-shadow: inset 0 0 0 2px var(--color-accent);
   border-radius: inherit;
 }
+
+/* SEO Prerender fallback styles (for non-JS crawlers and environments) */
+.seo-prerender {
+  max-width: 56rem;
+  margin: 0 auto;
+  padding: 3rem 1.5rem;
+  font-family: var(--font-sans);
+  color: var(--color-ink);
+  line-height: 1.6;
+}
+.seo-prerender h1 {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  font-weight: 700;
+  color: var(--color-ink);
+  margin-bottom: 1rem;
+}
+.seo-prerender h2 {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--color-ink);
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+}
+.seo-prerender h3 {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  font-weight: 600;
+  margin-top: 1.25rem;
+  margin-bottom: 0.5rem;
+}
+.seo-prerender p {
+  margin-bottom: 1rem;
+  color: var(--color-ink-soft);
+}
+.seo-prerender ul,
+.seo-prerender ol {
+  margin-bottom: 1.5rem;
+  padding-left: 1.5rem;
+  list-style-type: disc;
+}
+.seo-prerender li {
+  margin-bottom: 0.5rem;
+}
+.seo-prerender a {
+  color: var(--color-accent-text);
+  text-decoration: underline;
+}
