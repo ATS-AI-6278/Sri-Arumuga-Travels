@@ -19,8 +19,8 @@ export const TrustSection: React.FC = () => {
           Trust built in conversation — not in slogans.
         </h2>
         <p className="mt-4 max-w-2xl text-[var(--color-muted)] text-base sm:text-lg font-light leading-relaxed">
-          We do not publish invented ratings or promises we cannot keep. What we offer is steady
-          coordination, a comfortable sedan for the road, and clear answers when you call.
+          What we offer is steady coordination, a comfortable sedan for the road, and clear answers
+          when you call — so you can decide with a calm mind before you travel.
         </p>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
