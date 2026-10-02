@@ -1,52 +1,53 @@
 import React from 'react';
 import { Home, Armchair, PhoneCall, MessageSquareHeart } from 'lucide-react';
-import { HOW_IT_WORKS, TRUST_POINTS } from '../lib/content';
+import { useI18n } from '../i18n/I18nProvider';
 import { Reveal } from './Reveal';
 
 const ICONS = [Home, Armchair, PhoneCall, MessageSquareHeart];
 
 export const TrustSection: React.FC = () => {
+  const { t } = useI18n();
+
   return (
     <section id="trust" className="section-shell section-surface" aria-labelledby="trust-heading">
       <div className="max-w-6xl mx-auto">
         <Reveal>
           <p className="eyebrow mb-4">
             <span className="eyebrow-dot" aria-hidden />
-            Why travellers choose us
+            {t.trust.eyebrow}
           </p>
           <h2 id="trust-heading" className="display-title max-w-3xl">
-            A clear conversation before every journey.
+            {t.trust.title}
           </h2>
-          <p className="lede mt-4">
-            Steady coordination, a comfortable sedan, and plain answers when you call —
-            so you can leave with a quiet mind.
-          </p>
+          <p className="lede mt-4">{t.trust.lede}</p>
         </Reveal>
 
         <Reveal delayMs={70} className="mt-10">
           <figure className="fleet-card card overflow-hidden">
             <div className="grid md:grid-cols-12 gap-0 items-stretch">
               <div className="md:col-span-7 relative min-h-[14rem] sm:min-h-[18rem] bg-[var(--color-ink)]">
-                <img
-                  src="/fleet-scene.webp"
-                  alt="Dark grey Toyota Etios sedan on a scenic palm-lined road"
-                  width={1280}
-                  height={720}
-                  className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
-                  loading="lazy"
-                  decoding="async"
-                />
+                <picture>
+                  <source srcSet="/fleet-scene.webp" type="image/webp" />
+                  <img
+                    src="/fleet-scene.png"
+                    alt={t.trust.fleetAlt}
+                    width={1672}
+                    height={941}
+                    className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
+                    loading="lazy"
+                    decoding="async"
+                  />
+                </picture>
               </div>
               <figcaption className="md:col-span-5 flex flex-col justify-center gap-3 p-6 sm:p-8 border-t md:border-t-0 md:border-l border-[var(--color-line)] bg-[var(--color-surface)]">
                 <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent-text)]">
-                  On the road
+                  {t.trust.fleetEyebrow}
                 </p>
                 <h3 className="font-display text-2xl text-[var(--color-ink)] leading-snug">
-                  Etios sedan comfort
+                  {t.trust.fleetTitle}
                 </h3>
                 <p className="text-[15px] text-[var(--color-muted)] leading-relaxed">
-                  Dark metallic Etios sedan comfort for highway stretches — luggage, elders, and
-                  the quiet between towns. Journeys that start in Srivilliputtur.
+                  {t.trust.fleetBody}
                 </p>
               </figcaption>
             </div>
@@ -54,7 +55,7 @@ export const TrustSection: React.FC = () => {
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
-          {TRUST_POINTS.map((point, i) => {
+          {t.trust.points.map((point, i) => {
             const Icon = ICONS[i] ?? Home;
             return (
               <Reveal key={point.title} delayMs={50 + i * 60}>
@@ -79,16 +80,18 @@ export const TrustSection: React.FC = () => {
         <Reveal delayMs={80} className="mt-12">
           <div className="rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-bg-deep)] p-7 sm:p-10">
             <h3 className="font-display text-2xl sm:text-3xl text-[var(--color-ink)] mb-8">
-              How a trip usually begins
+              {t.trust.howTitle}
             </h3>
             <ol className="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {HOW_IT_WORKS.map((item) => (
+              {t.trust.steps.map((item) => (
                 <li key={item.step}>
                   <span className="text-xs font-bold tracking-[0.16em] text-[var(--color-accent-text)]">
                     {item.step}
                   </span>
                   <h4 className="mt-2 font-display text-xl text-[var(--color-ink)]">{item.title}</h4>
-                  <p className="mt-2 text-sm text-[var(--color-muted)] leading-relaxed">{item.description}</p>
+                  <p className="mt-2 text-sm text-[var(--color-muted)] leading-relaxed">
+                    {item.description}
+                  </p>
                 </li>
               ))}
             </ol>

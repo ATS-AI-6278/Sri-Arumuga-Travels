@@ -1,84 +1,109 @@
-import React, { useCallback, useMemo, useRef, useState } from 'react';
+import React, { Suspense, useCallback, useRef, useState } from 'react';
+import { BrowserRouter, Navigate, Route, Routes, useNavigate, useLocation } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
-import { HeroSection } from './components/HeroSection';
-import { ServicesSection } from './components/ServicesSection';
-import { DestinationsSection } from './components/DestinationsSection';
-import { TrustSection } from './components/TrustSection';
-import { StorySection } from './components/StorySection';
-import { EnquirySection } from './components/EnquirySection';
 import { SiteFooter } from './components/SiteFooter';
-import { ContactModal } from './components/ContactModal';
-import { StickyMobileCTA } from './components/StickyMobileCTA';
-import { SeoSchema } from './components/SeoSchema';
-import { usePrefersReducedMotion } from './hooks/usePrefersReducedMotion';
-import { useScrollSpy } from './hooks/useScrollSpy';
+import { Analytics } from './components/Analytics';
+import { SeoHead } from './components/seo/SeoHead';
+import { RouteJsonLd } from './components/seo/RouteJsonLd';
+import { useI18n } from './i18n/I18nProvider';
+import { HomePage } from './pages/HomePage';
+import { ServicesHubPage } from './pages/ServicesHubPage';
+import { ServicePage } from './pages/ServicePage';
+import { LocationsHubPage } from './pages/LocationsHubPage';
+import { LocationPage } from './pages/LocationPage';
+import { ContactPage } from './pages/ContactPage';
+const BlogIndexPage = React.lazy(() =>
+  import('./pages/blog/BlogIndexPage').then((m) => ({ default: m.BlogIndexPage }))
+);
+const BlogPostPage = React.lazy(() =>
+  import('./pages/blog/BlogPostPage').then((m) => ({ default: m.BlogPostPage }))
+);
+const BlogCategoryPage = React.lazy(() =>
+  import('./pages/blog/BlogCategoryPage').then((m) => ({ default: m.BlogCategoryPage }))
+);
+const BlogTagPage = React.lazy(() =>
+  import('./pages/blog/BlogTagPage').then((m) => ({ default: m.BlogTagPage }))
+);
 
-const SECTION_IDS = ['hero', 'services', 'destinations', 'trust', 'story', 'enquire'];
+function ScrollToTop() {
+  const { pathname } = useLocation();
+  React.useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+  return null;
+}
 
-export default function App() {
-  const [contactModalOpen, setContactModalOpen] = useState(false);
+function AppShell() {
+  const { t } = useI18n();
+  const navigate = useNavigate();
+  const location = useLocation();
+  const isHome = location.pathname === '/';
   const [mobileNavOpen, setMobileNavOpen] = useState(false);
-  const [enquiryDestination, setEnquiryDestination] = useState('');
-  const enquiryFormRef = useRef<HTMLFormElement | null>(null);
-  const reducedMotion = usePrefersReducedMotion();
-  const sectionIds = useMemo(() => SECTION_IDS, []);
-  const activeSection = useScrollSpy(sectionIds, mobileNavOpen || contactModalOpen);
-  const hideSticky = contactModalOpen || mobileNavOpen;
+  const [activeSection, setActiveSection] = useState('hero');
+  const scrollToEnquireRef = useRef<(destination?: string) => void>(() => undefined);
 
-  const scrollToEnquire = useCallback(
-    (destination?: string) => {
-      if (typeof destination === 'string') {
-        setEnquiryDestination(destination);
-      }
-      document
-        .getElementById('enquire')
-        ?.scrollIntoView({ behavior: reducedMotion ? 'auto' : 'smooth' });
-      window.setTimeout(() => {
-        enquiryFormRef.current
-          ?.querySelector<HTMLInputElement>('input')
-          ?.focus({ preventScroll: true });
-      }, reducedMotion ? 0 : 400);
-    },
-    [reducedMotion]
-  );
+  const onEnquiryClick = useCallback(() => {
+    if (isHome) {
+      scrollToEnquireRef.current();
+    } else {
+      navigate('/contact');
+    }
+  }, [isHome, navigate]);
 
   return (
-    <div
-      className={`relative min-h-screen w-full bg-[var(--color-bg)] text-[var(--color-ink)] ${
-        hideSticky ? '' : 'has-mobile-sticky'
-      }`}
-    >
+    <div className="relative min-h-screen w-full bg-[var(--color-bg)] text-[var(--color-ink)]">
       <a href="#main-content" className="skip-link">
-        Skip to content
+        {t.common.skipToContent}
       </a>
-      <SeoSchema />
+      <Analytics />
+      <SeoHead />
+      <RouteJsonLd />
+      <ScrollToTop />
 
       <Navigation
         activeSection={activeSection}
-        onEnquiryClick={() => scrollToEnquire()}
+        onEnquiryClick={onEnquiryClick}
         mobileOpen={mobileNavOpen}
         onMobileOpenChange={setMobileNavOpen}
       />
 
       <main id="main-content" className="relative z-10 w-full flex flex-col">
-        <HeroSection onEnquiryClick={() => scrollToEnquire()} />
-        <ServicesSection onEnquiryClick={() => scrollToEnquire()} />
-        <DestinationsSection onEnquireRoute={(dest) => scrollToEnquire(dest)} />
-        <TrustSection />
-        <StorySection onEnquiryClick={() => scrollToEnquire()} />
-        <EnquirySection initialDestination={enquiryDestination} formRef={enquiryFormRef} />
+        <Suspense fallback={<div className="section-shell pt-[calc(var(--header-h)+2rem)] text-center text-[var(--color-muted)]">Loading…</div>}>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <HomePage
+                onActiveSection={setActiveSection}
+                registerScrollToEnquire={(fn) => {
+                  scrollToEnquireRef.current = fn;
+                }}
+              />
+            }
+          />
+          <Route path="/services" element={<ServicesHubPage />} />
+          <Route path="/services/:slug" element={<ServicePage />} />
+          <Route path="/locations" element={<LocationsHubPage />} />
+          <Route path="/locations/:slug" element={<LocationPage />} />
+          <Route path="/contact" element={<ContactPage />} />
+          <Route path="/blog" element={<BlogIndexPage />} />
+          <Route path="/blog/category/:categorySlug" element={<BlogCategoryPage />} />
+          <Route path="/blog/tag/:tagSlug" element={<BlogTagPage />} />
+          <Route path="/blog/:slug" element={<BlogPostPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
+        </Suspense>
       </main>
 
       <SiteFooter />
-      <StickyMobileCTA
-        hidden={hideSticky}
-        onEnquiryClick={() => setContactModalOpen(true)}
-      />
-      <ContactModal
-        isOpen={contactModalOpen}
-        onClose={() => setContactModalOpen(false)}
-        onEnquire={() => scrollToEnquire()}
-      />
     </div>
+  );
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <AppShell />
+    </BrowserRouter>
   );
 }

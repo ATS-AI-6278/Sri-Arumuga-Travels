@@ -1,42 +1,48 @@
 import React from 'react';
-import { Phone, MessageCircle, ArrowDown } from 'lucide-react';
+import { ArrowDown, Phone, MessageCircle } from 'lucide-react';
+import { useI18n } from '../i18n/I18nProvider';
 import { CONTACT_DATA, telHref, whatsappHref } from '../lib/contact';
-import { BRAND } from '../lib/content';
 
 interface HeroSectionProps {
   onEnquiryClick: () => void;
 }
 
 export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
+  const { t } = useI18n();
+
   return (
     <section
       id="hero"
       className="hero-cinematic relative min-h-[100svh] w-full overflow-hidden"
       aria-labelledby="hero-heading"
     >
-      {/* Full-bleed AI travel scene — dark grey Etios on a scenic road */}
-      <div className="hero-scene absolute inset-0" aria-hidden>
+      <div className="hero-scene absolute inset-0">
         <picture>
-          <source srcSet="/hero-scene.webp" type="image/webp" />
+          <source
+            type="image/webp"
+            srcSet="/hero-scene-768.webp 768w, /hero-scene.webp 1280w"
+            sizes="100vw"
+          />
           <img
             src="/hero-scene.jpg"
-            alt=""
+            alt={t.hero.sceneAlt}
             className="hero-scene-img"
             width={1280}
             height={720}
-            decoding="async"
+            decoding="sync"
             fetchPriority="high"
+            sizes="100vw"
           />
         </picture>
-        <div className="hero-scene-shade" />
-        <div className="hero-scene-grain" />
+        <div className="hero-scene-shade" aria-hidden />
+        <div className="hero-scene-grain" aria-hidden />
       </div>
 
       <div className="hero-inner relative z-10 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-24 sm:pt-28 lg:pt-32 pb-6 sm:pb-8">
         <div className="max-w-6xl mx-auto w-full rise-in" style={{ animationDelay: '40ms' }}>
           <span className="eyebrow eyebrow-on-dark">
             <span className="eyebrow-dot" aria-hidden />
-            Based in {BRAND.homeBase}
+            {t.hero.basedIn} {t.brand.homeBase}
           </span>
         </div>
 
@@ -46,79 +52,78 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
               className="text-[13px] sm:text-sm font-semibold tracking-[0.18em] uppercase text-[var(--color-accent-soft)] mb-3 sm:mb-4 rise-in"
               style={{ animationDelay: '90ms' }}
             >
-              {BRAND.name}
+              {t.brand.name}
             </p>
             <h1
               id="hero-heading"
               className="font-display font-semibold text-[clamp(2.25rem,5.8vw,3.9rem)] leading-[1.1] tracking-[-0.028em] text-white max-w-[15ch] text-balance rise-in"
               style={{ animationDelay: '140ms' }}
             >
-              Travel from Srivilliputtur to{' '}
+              {t.hero.titleBefore}{' '}
               <span className="italic font-medium text-[var(--color-accent-soft)]">
-                anywhere in India
+                {t.hero.titleAccent}
               </span>
             </h1>
             <p
               className="mt-5 sm:mt-6 max-w-md text-[1.02rem] sm:text-lg text-white/78 leading-[1.65] rise-in"
               style={{ animationDelay: '210ms' }}
             >
-              Quiet sedan journeys for families, pilgrims, and everyday travellers —
-              planned by phone or WhatsApp before you leave town.
+              {t.hero.lede}
             </p>
 
             <div
-              className="mt-8 flex flex-col sm:flex-row flex-wrap gap-3 rise-in"
+              className="mt-8 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 rise-in"
               style={{ animationDelay: '280ms' }}
             >
-              <a href={telHref(CONTACT_DATA.phone1)} className="btn btn-primary min-h-12">
-                <Phone className="w-4 h-4" aria-hidden />
-                Call now
-              </a>
               <a
-                href={whatsappHref()}
+                href={telHref(CONTACT_DATA.phone1)}
+                className="btn btn-primary min-h-12 !px-5 inline-flex items-center justify-center gap-2.5 shadow-lg shadow-[var(--color-accent)]/25 group"
+                aria-label={`Call ${CONTACT_DATA.formattedPhone1}`}
+              >
+                <span className="w-7 h-7 rounded-full bg-white/20 flex items-center justify-center text-white group-hover:scale-110 transition-transform">
+                  <Phone className="w-3.5 h-3.5 fill-current" aria-hidden />
+                </span>
+                <span className="font-bold tracking-wide font-mono text-base">
+                  {CONTACT_DATA.formattedPhone1}
+                </span>
+              </a>
+
+              <button
+                type="button"
+                onClick={onEnquiryClick}
+                className="btn btn-on-dark min-h-12 !px-5"
+              >
+                {t.common.sendEnquiry}
+              </button>
+
+              <a
+                href={whatsappHref(t.whatsapp.greeting)}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="btn btn-whatsapp min-h-12"
+                className="btn btn-on-dark min-h-12 inline-flex items-center gap-2 !px-4 text-sm"
               >
-                <MessageCircle className="w-4 h-4" aria-hidden />
-                WhatsApp
+                <MessageCircle className="w-4 h-4 text-emerald-400" aria-hidden />
+                <span>WhatsApp</span>
               </a>
-              <button
-                type="button"
-                onClick={onEnquiryClick}
-                className="btn btn-on-dark min-h-12 hidden sm:inline-flex"
-              >
-                Send an enquiry
-              </button>
-              <button
-                type="button"
-                onClick={onEnquiryClick}
-                className="sm:hidden text-sm font-semibold text-[var(--color-accent-soft)] underline-offset-4 hover:underline py-1 self-start"
-              >
-                Or send an enquiry →
-              </button>
             </div>
 
-            <p
-              className="mt-5 text-sm text-white/55 rise-in"
+            <div
+              className="mt-6 inline-flex flex-wrap items-center gap-2.5 text-xs text-white/85 bg-black/40 backdrop-blur-md border border-white/20 rounded-full px-4 py-2.5 rise-in"
               style={{ animationDelay: '340ms' }}
             >
+              <span className="inline-flex items-center gap-1.5 text-emerald-400 font-semibold tracking-wide">
+                <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" aria-hidden />
+                Direct Desk:
+              </span>
               <a
-                className="text-white/85 hover:text-[var(--color-accent-soft)] font-medium tabular-nums"
                 href={telHref(CONTACT_DATA.phone1)}
+                className="font-bold text-white hover:text-[var(--color-accent-soft)] transition-colors underline decoration-white/40 underline-offset-2 font-mono tracking-wide"
               >
                 {CONTACT_DATA.formattedPhone1}
               </a>
-              <span className="mx-2 text-white/35" aria-hidden>
-                ·
-              </span>
-              <a
-                className="text-white/85 hover:text-[var(--color-accent-soft)] font-medium tabular-nums"
-                href={telHref(CONTACT_DATA.phone2)}
-              >
-                {CONTACT_DATA.formattedPhone2}
-              </a>
-            </p>
+              <span className="text-white/40" aria-hidden>·</span>
+              <span className="text-white/80">Srivilliputtur &amp; South TN</span>
+            </div>
           </div>
         </div>
 
@@ -131,18 +136,13 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
             className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.16em] text-white/60 hover:text-[var(--color-accent-soft)] transition-colors"
           >
             <ArrowDown className="w-4 h-4" aria-hidden />
-            Explore
+            {t.hero.explore}
           </a>
           <p className="hidden sm:block text-xs text-white/45 tracking-wide">
-            {BRAND.promise}
+            {t.brand.promise}
           </p>
         </div>
       </div>
-
-      {/* Visually hidden alt for the scene photo */}
-      <span className="sr-only">
-        Dark grey Toyota Etios sedan on a scenic road at golden hour — the kind of quiet journey we drive from Srivilliputtur.
-      </span>
     </section>
   );
 };

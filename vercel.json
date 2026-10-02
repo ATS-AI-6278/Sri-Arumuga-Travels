@@ -1,0 +1,431 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": "vite",
+  "buildCommand": "bun run build",
+  "outputDirectory": "dist",
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        }
+      ]
+    },
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)\\.(webp|jpg|jpeg|png|svg|ico|woff2)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/sitemap.xml",
+      "headers": [
+        {
+          "key": "Content-Type",
+          "value": "application/xml; charset=utf-8"
+        },
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/(robots\\.txt|llms\\.txt|manifest\\.webmanifest|favicon\\.svg|404\\.html)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=3600, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/services",
+      "destination": "/services/index.html"
+    },
+    {
+      "source": "/services/outstation-cab",
+      "destination": "/services/outstation-cab/index.html"
+    },
+    {
+      "source": "/services/airport-taxi",
+      "destination": "/services/airport-taxi/index.html"
+    },
+    {
+      "source": "/services/temple-pilgrimage",
+      "destination": "/services/temple-pilgrimage/index.html"
+    },
+    {
+      "source": "/services/local-taxi",
+      "destination": "/services/local-taxi/index.html"
+    },
+    {
+      "source": "/locations",
+      "destination": "/locations/index.html"
+    },
+    {
+      "source": "/locations/srivilliputtur",
+      "destination": "/locations/srivilliputtur/index.html"
+    },
+    {
+      "source": "/locations/madurai",
+      "destination": "/locations/madurai/index.html"
+    },
+    {
+      "source": "/locations/chennai",
+      "destination": "/locations/chennai/index.html"
+    },
+    {
+      "source": "/locations/bengaluru",
+      "destination": "/locations/bengaluru/index.html"
+    },
+    {
+      "source": "/locations/coimbatore",
+      "destination": "/locations/coimbatore/index.html"
+    },
+    {
+      "source": "/locations/rameswaram",
+      "destination": "/locations/rameswaram/index.html"
+    },
+    {
+      "source": "/locations/kodaikanal",
+      "destination": "/locations/kodaikanal/index.html"
+    },
+    {
+      "source": "/locations/thiruvananthapuram",
+      "destination": "/locations/thiruvananthapuram/index.html"
+    },
+    {
+      "source": "/contact",
+      "destination": "/contact/index.html"
+    },
+    {
+      "source": "/blog",
+      "destination": "/blog/index.html"
+    },
+    {
+      "source": "/blog/airport-pickup-tips-madurai",
+      "destination": "/blog/airport-pickup-tips-madurai/index.html"
+    },
+    {
+      "source": "/blog/andal-kovil-sandharshana-kurippu",
+      "destination": "/blog/andal-kovil-sandharshana-kurippu/index.html"
+    },
+    {
+      "source": "/blog/andal-temple-visit-tips",
+      "destination": "/blog/andal-temple-visit-tips/index.html"
+    },
+    {
+      "source": "/blog/bengaluru-road-trip-prep",
+      "destination": "/blog/bengaluru-road-trip-prep/index.html"
+    },
+    {
+      "source": "/blog/category/outstation",
+      "destination": "/blog/category/outstation/index.html"
+    },
+    {
+      "source": "/blog/category/road-trips",
+      "destination": "/blog/category/road-trips/index.html"
+    },
+    {
+      "source": "/blog/category/southern-tn-travel",
+      "destination": "/blog/category/southern-tn-travel/index.html"
+    },
+    {
+      "source": "/blog/category/srivilliputtur-travel",
+      "destination": "/blog/category/srivilliputtur-travel/index.html"
+    },
+    {
+      "source": "/blog/category/tamil-content",
+      "destination": "/blog/category/tamil-content/index.html"
+    },
+    {
+      "source": "/blog/category/tamil-nadu-tourism",
+      "destination": "/blog/category/tamil-nadu-tourism/index.html"
+    },
+    {
+      "source": "/blog/category/taxi-cab",
+      "destination": "/blog/category/taxi-cab/index.html"
+    },
+    {
+      "source": "/blog/category/travel-planning",
+      "destination": "/blog/category/travel-planning/index.html"
+    },
+    {
+      "source": "/blog/chennai-outstation-travel-checklist",
+      "destination": "/blog/chennai-outstation-travel-checklist/index.html"
+    },
+    {
+      "source": "/blog/choosing-pickup-time-for-long-drives",
+      "destination": "/blog/choosing-pickup-time-for-long-drives/index.html"
+    },
+    {
+      "source": "/blog/coimbatore-west-tn-travel",
+      "destination": "/blog/coimbatore-west-tn-travel/index.html"
+    },
+    {
+      "source": "/blog/courtallam-tenkasi-travel-notes",
+      "destination": "/blog/courtallam-tenkasi-travel-notes/index.html"
+    },
+    {
+      "source": "/blog/family-travel-with-elders-tn",
+      "destination": "/blog/family-travel-with-elders-tn/index.html"
+    },
+    {
+      "source": "/blog/festival-season-travel-planning-tn",
+      "destination": "/blog/festival-season-travel-planning-tn/index.html"
+    },
+    {
+      "source": "/blog/how-to-book-outstation-cab-tamil-nadu",
+      "destination": "/blog/how-to-book-outstation-cab-tamil-nadu/index.html"
+    },
+    {
+      "source": "/blog/iravu-payanam-pathukappu",
+      "destination": "/blog/iravu-payanam-pathukappu/index.html"
+    },
+    {
+      "source": "/blog/kanyakumari-from-southern-tn",
+      "destination": "/blog/kanyakumari-from-southern-tn/index.html"
+    },
+    {
+      "source": "/blog/kodaikanal-vaiyara-payanam",
+      "destination": "/blog/kodaikanal-vaiyara-payanam/index.html"
+    },
+    {
+      "source": "/blog/kodaikanal-weekend-from-south-tn",
+      "destination": "/blog/kodaikanal-weekend-from-south-tn/index.html"
+    },
+    {
+      "source": "/blog/kudumbam-payanam-yorchanai",
+      "destination": "/blog/kudumbam-payanam-yorchanai/index.html"
+    },
+    {
+      "source": "/blog/local-taxi-vs-outstation-cab",
+      "destination": "/blog/local-taxi-vs-outstation-cab/index.html"
+    },
+    {
+      "source": "/blog/luggage-and-sedan-capacity-tips",
+      "destination": "/blog/luggage-and-sedan-capacity-tips/index.html"
+    },
+    {
+      "source": "/blog/madurai-from-srivilliputtur-travel-tips",
+      "destination": "/blog/madurai-from-srivilliputtur-travel-tips/index.html"
+    },
+    {
+      "source": "/blog/madurai-payanam-yorchanai",
+      "destination": "/blog/madurai-payanam-yorchanai/index.html"
+    },
+    {
+      "source": "/blog/mazhaikalam-payanam-kurippu",
+      "destination": "/blog/mazhaikalam-payanam-kurippu/index.html"
+    },
+    {
+      "source": "/blog/monsoon-travel-tips-tamil-nadu",
+      "destination": "/blog/monsoon-travel-tips-tamil-nadu/index.html"
+    },
+    {
+      "source": "/blog/outstation-cab-ennave-theriyumo",
+      "destination": "/blog/outstation-cab-ennave-theriyumo/index.html"
+    },
+    {
+      "source": "/blog/overnight-vs-day-travel-outstation",
+      "destination": "/blog/overnight-vs-day-travel-outstation/index.html"
+    },
+    {
+      "source": "/blog/packing-for-south-india-road-travel",
+      "destination": "/blog/packing-for-south-india-road-travel/index.html"
+    },
+    {
+      "source": "/blog/planning-multi-stop-temple-circuit",
+      "destination": "/blog/planning-multi-stop-temple-circuit/index.html"
+    },
+    {
+      "source": "/blog/rameswaram-pilgrimage-road-travel",
+      "destination": "/blog/rameswaram-pilgrimage-road-travel/index.html"
+    },
+    {
+      "source": "/blog/rameswaram-yatirai-vazhi",
+      "destination": "/blog/rameswaram-yatirai-vazhi/index.html"
+    },
+    {
+      "source": "/blog/safe-night-travel-practices-tn",
+      "destination": "/blog/safe-night-travel-practices-tn/index.html"
+    },
+    {
+      "source": "/blog/soft-cta-how-to-enquire-sat",
+      "destination": "/blog/soft-cta-how-to-enquire-sat/index.html"
+    },
+    {
+      "source": "/blog/southern-tamil-nadu-road-trip-planner",
+      "destination": "/blog/southern-tamil-nadu-road-trip-planner/index.html"
+    },
+    {
+      "source": "/blog/srivilliputtur-day-trip-ideas",
+      "destination": "/blog/srivilliputtur-day-trip-ideas/index.html"
+    },
+    {
+      "source": "/blog/srivilliputtur-payanam-vazhikatti",
+      "destination": "/blog/srivilliputtur-payanam-vazhikatti/index.html"
+    },
+    {
+      "source": "/blog/tag/airport",
+      "destination": "/blog/tag/airport/index.html"
+    },
+    {
+      "source": "/blog/tag/bengaluru",
+      "destination": "/blog/tag/bengaluru/index.html"
+    },
+    {
+      "source": "/blog/tag/checklist",
+      "destination": "/blog/tag/checklist/index.html"
+    },
+    {
+      "source": "/blog/tag/chennai",
+      "destination": "/blog/tag/chennai/index.html"
+    },
+    {
+      "source": "/blog/tag/coast",
+      "destination": "/blog/tag/coast/index.html"
+    },
+    {
+      "source": "/blog/tag/coimbatore",
+      "destination": "/blog/tag/coimbatore/index.html"
+    },
+    {
+      "source": "/blog/tag/courtallam",
+      "destination": "/blog/tag/courtallam/index.html"
+    },
+    {
+      "source": "/blog/tag/family",
+      "destination": "/blog/tag/family/index.html"
+    },
+    {
+      "source": "/blog/tag/festival",
+      "destination": "/blog/tag/festival/index.html"
+    },
+    {
+      "source": "/blog/tag/hills",
+      "destination": "/blog/tag/hills/index.html"
+    },
+    {
+      "source": "/blog/tag/kanyakumari",
+      "destination": "/blog/tag/kanyakumari/index.html"
+    },
+    {
+      "source": "/blog/tag/kerala",
+      "destination": "/blog/tag/kerala/index.html"
+    },
+    {
+      "source": "/blog/tag/kodaikanal",
+      "destination": "/blog/tag/kodaikanal/index.html"
+    },
+    {
+      "source": "/blog/tag/madurai",
+      "destination": "/blog/tag/madurai/index.html"
+    },
+    {
+      "source": "/blog/tag/monsoon",
+      "destination": "/blog/tag/monsoon/index.html"
+    },
+    {
+      "source": "/blog/tag/night-travel",
+      "destination": "/blog/tag/night-travel/index.html"
+    },
+    {
+      "source": "/blog/tag/packing",
+      "destination": "/blog/tag/packing/index.html"
+    },
+    {
+      "source": "/blog/tag/pilgrimage",
+      "destination": "/blog/tag/pilgrimage/index.html"
+    },
+    {
+      "source": "/blog/tag/rameswaram",
+      "destination": "/blog/tag/rameswaram/index.html"
+    },
+    {
+      "source": "/blog/tag/sedan",
+      "destination": "/blog/tag/sedan/index.html"
+    },
+    {
+      "source": "/blog/tag/srivilliputtur",
+      "destination": "/blog/tag/srivilliputtur/index.html"
+    },
+    {
+      "source": "/blog/tag/temple",
+      "destination": "/blog/tag/temple/index.html"
+    },
+    {
+      "source": "/blog/tag/thoothukudi",
+      "destination": "/blog/tag/thoothukudi/index.html"
+    },
+    {
+      "source": "/blog/tag/tirunelveli",
+      "destination": "/blog/tag/tirunelveli/index.html"
+    },
+    {
+      "source": "/blog/tamil-nadu-hill-station-basics",
+      "destination": "/blog/tamil-nadu-hill-station-basics/index.html"
+    },
+    {
+      "source": "/blog/taxi-munbu-ketka-vendiyavai",
+      "destination": "/blog/taxi-munbu-ketka-vendiyavai/index.html"
+    },
+    {
+      "source": "/blog/temple-pilgrimage-family-travel",
+      "destination": "/blog/temple-pilgrimage-family-travel/index.html"
+    },
+    {
+      "source": "/blog/then-tamilnadu-suthula-payanam",
+      "destination": "/blog/then-tamilnadu-suthula-payanam/index.html"
+    },
+    {
+      "source": "/blog/thiruvananthapuram-kerala-border-travel",
+      "destination": "/blog/thiruvananthapuram-kerala-border-travel/index.html"
+    },
+    {
+      "source": "/blog/thoothukudi-coastal-travel",
+      "destination": "/blog/thoothukudi-coastal-travel/index.html"
+    },
+    {
+      "source": "/blog/tirunelveli-travel-hub",
+      "destination": "/blog/tirunelveli-travel-hub/index.html"
+    },
+    {
+      "source": "/blog/vimana-nilaiyam-pickup-kurippu",
+      "destination": "/blog/vimana-nilaiyam-pickup-kurippu/index.html"
+    },
+    {
+      "source": "/blog/visiting-srivilliputtur-travel-guide",
+      "destination": "/blog/visiting-srivilliputtur-travel-guide/index.html"
+    },
+    {
+      "source": "/blog/what-to-ask-before-booking-taxi",
+      "destination": "/blog/what-to-ask-before-booking-taxi/index.html"
+    }
+  ]
+}

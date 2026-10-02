@@ -1,16 +1,23 @@
-import React, { useEffect, useId, useState } from 'react';
-import { CheckCircle2, AlertCircle, Loader2, MessageCircle, Phone } from 'lucide-react';
+import React, { useEffect, useId, useMemo, useState } from 'react';
+import { CheckCircle2, AlertCircle, Loader2, MessageCircle, Phone, Mail } from 'lucide-react';
 import {
   CONTACT_DATA,
+  buildEnquiryMeta,
   buildEnquiryWhatsAppMessage,
+  enquiryMailtoHref,
+  getOptionalFormEndpoint,
   isValidIndianMobile,
+  mailtoHref,
+  submitEnquiryToOptionalEndpoint,
   telHref,
+  trackEnquiryClarity,
   whatsappHref,
   type EnquiryPayload,
 } from '../lib/contact';
+import { useI18n } from '../i18n/I18nProvider';
 import { Reveal } from './Reveal';
 
-type FormStatus = 'idle' | 'loading' | 'success' | 'error';
+type FormStatus = 'idle' | 'loading' | 'success' | 'error' | 'email';
 
 interface FieldErrors {
   name?: string;
@@ -23,42 +30,40 @@ interface EnquirySectionProps {
   formRef?: React.RefObject<HTMLFormElement | null>;
 }
 
-const emptyForm: EnquiryPayload = {
-  name: '',
-  phone: '',
-  pickup: 'Srivilliputtur',
-  destination: '',
-  travelDate: '',
-  passengers: '',
-  notes: '',
-};
-
-function validate(form: EnquiryPayload): FieldErrors {
-  const errors: FieldErrors = {};
-  if (!form.name.trim() || form.name.trim().length < 2) {
-    errors.name = 'Please share your name.';
-  }
-  if (!isValidIndianMobile(form.phone)) {
-    errors.phone = 'Enter a valid 10-digit Indian mobile number.';
-  }
-  if (!form.destination.trim() || form.destination.trim().length < 2) {
-    errors.destination = 'Tell us where you need to go.';
-  }
-  return errors;
-}
-
 export const EnquirySection: React.FC<EnquirySectionProps> = ({
   initialDestination = '',
   formRef,
 }) => {
+  const { t, locale } = useI18n();
   const formId = useId();
   const [form, setForm] = useState<EnquiryPayload>({
-    ...emptyForm,
+    name: '',
+    phone: '',
+    pickup: t.enquire.defaultPickup,
     destination: initialDestination,
+    travelDate: '',
+    passengers: '',
+    notes: '',
   });
   const [errors, setErrors] = useState<FieldErrors>({});
   const [status, setStatus] = useState<FormStatus>('idle');
   const [statusMessage, setStatusMessage] = useState('');
+  const [showFallback, setShowFallback] = useState(false);
+
+  const waLabels = useMemo(
+    () => ({
+      title: t.whatsapp.enquiryTitle,
+      name: t.whatsapp.name,
+      phone: t.whatsapp.phone,
+      pickup: t.whatsapp.pickup,
+      destination: t.whatsapp.destination,
+      date: t.whatsapp.date,
+      passengers: t.whatsapp.passengers,
+      notes: t.whatsapp.notes,
+      defaultPickup: t.enquire.defaultPickup,
+    }),
+    [t]
+  );
 
   useEffect(() => {
     setForm((prev) => ({ ...prev, destination: initialDestination }));
@@ -69,6 +74,31 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
       return next;
     });
   }, [initialDestination]);
+
+  useEffect(() => {
+    setForm((prev) => {
+      const enDefault = 'Srivilliputtur';
+      const taDefault = 'ஸ்ரீவில்லிபுத்தூர்';
+      if (prev.pickup === enDefault || prev.pickup === taDefault || !prev.pickup.trim()) {
+        return { ...prev, pickup: t.enquire.defaultPickup };
+      }
+      return prev;
+    });
+  }, [t.enquire.defaultPickup]);
+
+  const validate = (payload: EnquiryPayload): FieldErrors => {
+    const next: FieldErrors = {};
+    if (!payload.name.trim() || payload.name.trim().length < 2) {
+      next.name = t.enquire.errName;
+    }
+    if (!isValidIndianMobile(payload.phone)) {
+      next.phone = t.enquire.errPhone;
+    }
+    if (!payload.destination.trim() || payload.destination.trim().length < 2) {
+      next.destination = t.enquire.errDestination;
+    }
+    return next;
+  };
 
   const update = (key: keyof EnquiryPayload, value: string) => {
     setForm((prev) => ({ ...prev, [key]: value }));
@@ -81,6 +111,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     if (status !== 'idle') {
       setStatus('idle');
       setStatusMessage('');
+      setShowFallback(false);
     }
   };
 
@@ -92,37 +123,122 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     }
   };
 
+  const openMailto = (meta = buildEnquiryMeta(locale)) => {
+    const href = enquiryMailtoHref(form, waLabels, meta);
+    window.location.href = href;
+    setStatus('email');
+    setStatusMessage(t.enquire.emailOpenedMsg);
+    setShowFallback(true);
+  };
+
+  const handleEmailClick = () => {
+    const nextErrors = validate(form);
+    setErrors(nextErrors);
+    if (Object.keys(nextErrors).length > 0) {
+      setStatus('error');
+      setStatusMessage(t.enquire.errFix);
+      setShowFallback(false);
+      window.setTimeout(() => focusFirstError(nextErrors), 0);
+      return;
+    }
+    const meta = buildEnquiryMeta(locale);
+    trackEnquiryClarity({
+      lang: meta.lang,
+      hasEndpoint: Boolean(getOptionalFormEndpoint()),
+      channel: 'email',
+    });
+    // Best-effort inbox delivery when Web3Forms/Formspree is configured.
+    void submitEnquiryToOptionalEndpoint(form, meta);
+    openMailto(meta);
+  };
+
   const handleSubmit = async (event: React.FormEvent) => {
     event.preventDefault();
     const nextErrors = validate(form);
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length > 0) {
       setStatus('error');
-      setStatusMessage('Please fix the highlighted fields and try again.');
+      setStatusMessage(t.enquire.errFix);
+      setShowFallback(false);
       window.setTimeout(() => focusFirstError(nextErrors), 0);
       return;
     }
 
     setStatus('loading');
-    setStatusMessage('Preparing your WhatsApp enquiry…');
+    setStatusMessage(t.enquire.loadingMsg);
+    setShowFallback(false);
 
+    const meta = buildEnquiryMeta(locale);
+    const endpointConfigured = Boolean(getOptionalFormEndpoint());
+
+    // 1) Email path: POST when Web3Forms/Formspree configured (dual keys → both Gmails).
+    const endpointResult = await submitEnquiryToOptionalEndpoint(form, meta);
+    const needMailtoFallback = endpointResult.skipped || !endpointResult.ok;
+
+    // 2) WhatsApp prefilled handoff with full enquiry (always).
+    let waOpened = false;
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      const href = whatsappHref(buildEnquiryWhatsAppMessage(form));
+      await new Promise((resolve) => setTimeout(resolve, 250));
+      const href = whatsappHref(buildEnquiryWhatsAppMessage(form, waLabels, meta));
       const popup = window.open(href, '_blank', 'noopener,noreferrer');
       if (!popup) {
-        window.location.assign(href);
-        return;
+        try {
+          window.location.assign(href);
+          waOpened = true;
+        } catch {
+          /* ignore */
+        }
+      } else {
+        waOpened = true;
       }
-      setStatus('success');
-      setStatusMessage(
-        'Enquiry ready — WhatsApp should open with your details. If it did not, use the button below.'
-      );
     } catch {
-      setStatus('error');
-      setStatusMessage('Something went wrong opening WhatsApp. Please call us instead.');
+      waOpened = false;
     }
+
+    // 3) If no server inbox path, open mailto to public + cc owner (both Gmails).
+    // Use a temporary <a> click so we do not clobber the WhatsApp tab/navigation.
+    let openedMailto = false;
+    if (needMailtoFallback) {
+      try {
+        const mail = enquiryMailtoHref(form, waLabels, meta);
+        const a = document.createElement('a');
+        a.href = mail;
+        a.rel = 'noopener noreferrer';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        openedMailto = true;
+      } catch {
+        /* ignore */
+      }
+    }
+
+    trackEnquiryClarity({
+      lang: meta.lang,
+      hasEndpoint: endpointConfigured,
+      channel: openedMailto ? 'both' : 'whatsapp',
+    });
+
+    if (!waOpened && !openedMailto) {
+      setStatus('error');
+      setStatusMessage(t.enquire.errorMsg);
+      setShowFallback(true);
+      return;
+    }
+    if (!waOpened) {
+      setStatus('error');
+      setStatusMessage(t.enquire.fallbackHint);
+      setShowFallback(true);
+      return;
+    }
+    setStatus('success');
+    setStatusMessage(t.enquire.successMsg);
+    setShowFallback(true);
   };
+
+  const liveMeta = buildEnquiryMeta(locale);
+  const mailHref = enquiryMailtoHref(form, waLabels, liveMeta);
+  const waHref = whatsappHref(buildEnquiryWhatsAppMessage(form, waLabels, liveMeta));
 
   return (
     <section id="enquire" className="section-shell section-surface" aria-labelledby="enquire-heading">
@@ -131,15 +247,12 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
           <Reveal>
             <p className="eyebrow mb-4">
               <span className="eyebrow-dot" aria-hidden />
-              Enquire
+              {t.enquire.eyebrow}
             </p>
             <h2 id="enquire-heading" className="display-title">
-              Tell us where you are headed.
+              {t.enquire.title}
             </h2>
-            <p className="lede mt-4">
-              Fill in the basics and we will open WhatsApp with a ready message.
-              Prefer to talk? Call either number.
-            </p>
+            <p className="lede mt-4">{t.enquire.lede}</p>
           </Reveal>
 
           <Reveal delayMs={70} className="mt-8 space-y-3">
@@ -149,7 +262,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
             >
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-accent-text)]">
-                  Primary
+                  {t.enquire.primary}
                 </p>
                 <p className="mt-1 text-lg font-semibold tabular-nums text-[var(--color-ink)]">
                   {CONTACT_DATA.formattedPhone1}
@@ -163,13 +276,27 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
             >
               <div>
                 <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-faint)]">
-                  Secondary
+                  {t.enquire.secondary}
                 </p>
                 <p className="mt-1 text-lg font-semibold tabular-nums text-[var(--color-ink)]">
                   {CONTACT_DATA.formattedPhone2}
                 </p>
               </div>
               <Phone className="w-5 h-5 text-[var(--color-muted)]" aria-hidden />
+            </a>
+            <a
+              href={mailtoHref()}
+              className="card flex items-center justify-between p-4 hover:border-[var(--color-accent)] transition-colors"
+            >
+              <div>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-faint)]">
+                  {t.enquire.emailLabel}
+                </p>
+                <p className="mt-1 text-base font-semibold text-[var(--color-ink)] break-all">
+                  {CONTACT_DATA.email}
+                </p>
+              </div>
+              <Mail className="w-5 h-5 text-[var(--color-muted)]" aria-hidden />
             </a>
           </Reveal>
         </div>
@@ -186,7 +313,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="field-label" htmlFor={`${formId}-name`}>
-                    Your name *
+                    {t.enquire.name}
                   </label>
                   <input
                     id={`${formId}-name`}
@@ -205,14 +332,14 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </div>
                 <div>
                   <label className="field-label" htmlFor={`${formId}-phone`}>
-                    Mobile number *
+                    {t.enquire.phone}
                   </label>
                   <input
                     id={`${formId}-phone`}
                     className="field-input"
                     inputMode="tel"
                     autoComplete="tel"
-                    placeholder="10-digit number"
+                    placeholder={t.enquire.phonePlaceholder}
                     value={form.phone}
                     onChange={(e) => update('phone', e.target.value)}
                     aria-invalid={Boolean(errors.phone)}
@@ -229,7 +356,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="field-label" htmlFor={`${formId}-pickup`}>
-                    Pickup
+                    {t.enquire.pickup}
                   </label>
                   <input
                     id={`${formId}-pickup`}
@@ -240,12 +367,12 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 </div>
                 <div>
                   <label className="field-label" htmlFor={`${formId}-destination`}>
-                    Destination *
+                    {t.enquire.destination}
                   </label>
                   <input
                     id={`${formId}-destination`}
                     className="field-input"
-                    placeholder="City, town, or landmark"
+                    placeholder={t.enquire.destinationPlaceholder}
                     value={form.destination}
                     onChange={(e) => update('destination', e.target.value)}
                     aria-invalid={Boolean(errors.destination)}
@@ -262,24 +389,24 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
               <div className="grid sm:grid-cols-2 gap-4">
                 <div>
                   <label className="field-label" htmlFor={`${formId}-date`}>
-                    Travel date / timing
+                    {t.enquire.travelDate}
                   </label>
                   <input
                     id={`${formId}-date`}
                     className="field-input"
-                    placeholder="e.g. 12 Oct morning / flexible"
+                    placeholder={t.enquire.travelDatePlaceholder}
                     value={form.travelDate}
                     onChange={(e) => update('travelDate', e.target.value)}
                   />
                 </div>
                 <div>
                   <label className="field-label" htmlFor={`${formId}-passengers`}>
-                    Passengers
+                    {t.enquire.passengers}
                   </label>
                   <input
                     id={`${formId}-passengers`}
                     className="field-input"
-                    placeholder="e.g. 3 adults, 1 child"
+                    placeholder={t.enquire.passengersPlaceholder}
                     value={form.passengers}
                     onChange={(e) => update('passengers', e.target.value)}
                   />
@@ -288,7 +415,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
 
               <div>
                 <label className="field-label" htmlFor={`${formId}-notes`}>
-                  Anything else we should know?
+                  {t.enquire.notes}
                 </label>
                 <textarea
                   id={`${formId}-notes`}
@@ -303,7 +430,7 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                 role="status"
                 aria-live="polite"
                 className={`rounded-[var(--radius-sm)] px-4 py-3 text-sm flex items-start gap-2 ${
-                  status === 'success'
+                  status === 'success' || status === 'email'
                     ? 'bg-[var(--color-success-bg)] text-[var(--color-whatsapp-hover)]'
                     : status === 'error'
                       ? 'bg-[var(--color-error-bg)] text-[var(--color-error)]'
@@ -312,40 +439,70 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
                         : 'text-[var(--color-faint)]'
                 }`}
               >
-                {status === 'loading' && <Loader2 className="w-4 h-4 mt-0.5 animate-spin shrink-0" aria-hidden />}
-                {status === 'success' && <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
-                {status === 'error' && <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
-                <span>
-                  {statusMessage ||
-                    'No booking account required — your enquiry goes straight to WhatsApp.'}
-                </span>
+                {status === 'loading' && (
+                  <Loader2 className="w-4 h-4 mt-0.5 animate-spin shrink-0" aria-hidden />
+                )}
+                {(status === 'success' || status === 'email') && (
+                  <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
+                )}
+                {status === 'error' && (
+                  <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />
+                )}
+                <span>{statusMessage || t.enquire.idleHint}</span>
               </div>
 
               <div className="flex flex-col sm:flex-row gap-3">
-                <button type="submit" className="btn btn-primary flex-1 min-h-12" disabled={status === 'loading'}>
+                <button
+                  type="submit"
+                  className="btn btn-primary flex-1 min-h-12"
+                  disabled={status === 'loading'}
+                >
                   {status === 'loading' ? (
                     <>
                       <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
-                      Preparing…
+                      {t.enquire.preparing}
                     </>
                   ) : (
                     <>
                       <MessageCircle className="w-4 h-4" aria-hidden />
-                      Send via WhatsApp
+                      {t.enquire.submit}
                     </>
                   )}
                 </button>
-                {status === 'success' && (
-                  <a
-                    href={whatsappHref(buildEnquiryWhatsAppMessage(form))}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="btn btn-whatsapp flex-1 min-h-12"
-                  >
-                    Open WhatsApp again
-                  </a>
-                )}
+                <button
+                  type="button"
+                  className="btn btn-secondary flex-1 min-h-12"
+                  onClick={handleEmailClick}
+                  disabled={status === 'loading'}
+                >
+                  <Mail className="w-4 h-4" aria-hidden />
+                  {t.enquire.submitEmail}
+                </button>
               </div>
+
+              {showFallback && (
+                <div className="flex flex-col sm:flex-row gap-3">
+                  {(status === 'success' || status === 'error') && (
+                    <a
+                      href={waHref}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="btn btn-whatsapp flex-1 min-h-12"
+                    >
+                      <MessageCircle className="w-4 h-4" aria-hidden />
+                      {t.enquire.openAgain}
+                    </a>
+                  )}
+                  <a href={mailHref} className="btn btn-ghost flex-1 min-h-12">
+                    <Mail className="w-4 h-4" aria-hidden />
+                    {t.enquire.openEmail}
+                  </a>
+                  <a href={telHref(CONTACT_DATA.phone1)} className="btn btn-ghost flex-1 min-h-12">
+                    <Phone className="w-4 h-4" aria-hidden />
+                    {CONTACT_DATA.formattedPhone1}
+                  </a>
+                </div>
+              )}
             </form>
           </Reveal>
         </div>
@@ -353,3 +510,4 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     </section>
   );
 };
+

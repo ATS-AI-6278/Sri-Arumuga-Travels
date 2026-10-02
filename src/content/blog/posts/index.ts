@@ -1,0 +1,48 @@
+import type { BlogPost } from '../types';
+
+import p0 from './airport-pickup-tips-madurai';
+import p1 from './andal-kovil-sandharshana-kurippu';
+import p2 from './andal-temple-visit-tips';
+import p3 from './bengaluru-road-trip-prep';
+import p4 from './chennai-outstation-travel-checklist';
+import p5 from './choosing-pickup-time-for-long-drives';
+import p6 from './coimbatore-west-tn-travel';
+import p7 from './courtallam-tenkasi-travel-notes';
+import p8 from './family-travel-with-elders-tn';
+import p9 from './festival-season-travel-planning-tn';
+import p10 from './how-to-book-outstation-cab-tamil-nadu';
+import p11 from './iravu-payanam-pathukappu';
+import p12 from './kanyakumari-from-southern-tn';
+import p13 from './kodaikanal-vaiyara-payanam';
+import p14 from './kodaikanal-weekend-from-south-tn';
+import p15 from './kudumbam-payanam-yorchanai';
+import p16 from './local-taxi-vs-outstation-cab';
+import p17 from './luggage-and-sedan-capacity-tips';
+import p18 from './madurai-from-srivilliputtur-travel-tips';
+import p19 from './madurai-payanam-yorchanai';
+import p20 from './mazhaikalam-payanam-kurippu';
+import p21 from './monsoon-travel-tips-tamil-nadu';
+import p22 from './outstation-cab-ennave-theriyumo';
+import p23 from './overnight-vs-day-travel-outstation';
+import p24 from './packing-for-south-india-road-travel';
+import p25 from './planning-multi-stop-temple-circuit';
+import p26 from './rameswaram-pilgrimage-road-travel';
+import p27 from './rameswaram-yatirai-vazhi';
+import p28 from './safe-night-travel-practices-tn';
+import p29 from './soft-cta-how-to-enquire-sat';
+import p30 from './southern-tamil-nadu-road-trip-planner';
+import p31 from './srivilliputtur-day-trip-ideas';
+import p32 from './srivilliputtur-payanam-vazhikatti';
+import p33 from './tamil-nadu-hill-station-basics';
+import p34 from './taxi-munbu-ketka-vendiyavai';
+import p35 from './temple-pilgrimage-family-travel';
+import p36 from './then-tamilnadu-suthula-payanam';
+import p37 from './thiruvananthapuram-kerala-border-travel';
+import p38 from './thoothukudi-coastal-travel';
+import p39 from './tirunelveli-travel-hub';
+import p40 from './vimana-nilaiyam-pickup-kurippu';
+import p41 from './visiting-srivilliputtur-travel-guide';
+import p42 from './what-to-ask-before-booking-taxi';
+
+export const ALL_POSTS: BlogPost[] = [p0, p1, p2, p3, p4, p5, p6, p7, p8, p9, p10, p11, p12, p13, p14, p15, p16, p17, p18, p19, p20, p21, p22, p23, p24, p25, p26, p27, p28, p29, p30, p31, p32, p33, p34, p35, p36, p37, p38, p39, p40, p41, p42];
+
