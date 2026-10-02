@@ -16,11 +16,11 @@ export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
     >
       <div className="absolute inset-0 hero-vignette pointer-events-none" aria-hidden />
       <div
-        className="absolute inset-x-0 bottom-0 h-44 pointer-events-none bg-gradient-to-t from-[var(--color-ink)] via-[var(--color-ink)]/70 to-transparent"
+        className="absolute inset-x-0 bottom-0 h-28 sm:h-40 pointer-events-none bg-gradient-to-t from-[var(--color-ink)]/80 via-[var(--color-ink)]/35 to-transparent"
         aria-hidden
       />
 
-      <div className="relative flex-1 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-28 sm:pt-32 pb-8 sm:pb-10">
+      <div className="relative flex-1 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-28 sm:pt-32 pb-6 sm:pb-10">
         <div className="max-w-7xl mx-auto w-full hero-enter" style={{ animationDelay: '40ms' }}>
           <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/45 px-3.5 py-1.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
             <span className="relative flex h-2 w-2" aria-hidden>

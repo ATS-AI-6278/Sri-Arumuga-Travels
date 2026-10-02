@@ -78,7 +78,11 @@ export default function App() {
   const hideSticky = contactModalOpen || mobileNavOpen;
 
   return (
-    <div className="relative min-h-screen w-full bg-[var(--color-ink)] text-[var(--color-cream)]">
+    <div
+      className={`relative min-h-screen w-full bg-[var(--color-ink)] text-[var(--color-cream)] ${
+        hideSticky ? '' : 'has-mobile-sticky'
+      }`}
+    >
       <a href="#main-content" className="skip-link">
         Skip to content
       </a>

@@ -26,7 +26,7 @@
     --shadow-glow: 0 10px 40px rgba(0, 0, 0, 0.35), 0 0 24px rgba(201, 162, 69, 0.16);
     --shadow-lift: 0 18px 40px rgba(0, 0, 0, 0.35);
     --header-h: 4.75rem;
-    --sticky-cta-h: 4.85rem;
+    --sticky-cta-h: 5.35rem;
     --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
     --dur: 680ms;
   }
@@ -291,10 +291,20 @@
   /* Photographic dusk-road atmosphere (no stock photos) */
   .ambient-fallback {
     background:
-      radial-gradient(ellipse 90% 60% at 72% 38%, rgba(201, 162, 69, 0.11), transparent 52%),
-      radial-gradient(ellipse 55% 45% at 18% 72%, rgba(90, 110, 150, 0.16), transparent 55%),
-      radial-gradient(ellipse 40% 30% at 40% 20%, rgba(255, 180, 120, 0.05), transparent 50%),
-      linear-gradient(168deg, #07090d 0%, #12131a 38%, #1a1512 68%, #0a0c10 100%);
+      radial-gradient(ellipse 90% 60% at 72% 38%, rgba(201, 162, 69, 0.16), transparent 52%),
+      radial-gradient(ellipse 55% 45% at 18% 72%, rgba(100, 125, 170, 0.22), transparent 55%),
+      radial-gradient(ellipse 45% 35% at 40% 22%, rgba(255, 190, 130, 0.1), transparent 50%),
+      linear-gradient(168deg, #0c1018 0%, #171c28 36%, #221c18 68%, #0e1218 100%);
+  }
+
+  @media (max-width: 767.98px) {
+    .ambient-fallback {
+      background:
+        radial-gradient(ellipse 100% 70% at 70% 35%, rgba(201, 162, 69, 0.2), transparent 55%),
+        radial-gradient(ellipse 70% 55% at 20% 70%, rgba(110, 135, 180, 0.26), transparent 58%),
+        radial-gradient(ellipse 50% 40% at 45% 18%, rgba(255, 200, 140, 0.12), transparent 52%),
+        linear-gradient(168deg, #10151f 0%, #1c2230 40%, #2a221c 70%, #12161e 100%);
+    }
   }
 
   .ambient-fallback::after,
@@ -339,8 +349,16 @@
 
   .hero-vignette {
     background:
-      linear-gradient(180deg, rgba(9, 11, 15, 0.55) 0%, transparent 28%, transparent 58%, rgba(9, 11, 15, 0.88) 100%),
-      radial-gradient(ellipse 85% 70% at 50% 45%, transparent 20%, rgba(9, 11, 15, 0.55) 100%);
+      linear-gradient(180deg, rgba(9, 11, 15, 0.38) 0%, transparent 26%, transparent 62%, rgba(9, 11, 15, 0.62) 100%),
+      radial-gradient(ellipse 90% 75% at 55% 42%, transparent 28%, rgba(9, 11, 15, 0.32) 100%);
+  }
+
+  @media (max-width: 767.98px) {
+    .hero-vignette {
+      background:
+        linear-gradient(180deg, rgba(9, 11, 15, 0.28) 0%, transparent 22%, transparent 58%, rgba(9, 11, 15, 0.48) 100%),
+        radial-gradient(ellipse 95% 80% at 50% 40%, transparent 35%, rgba(9, 11, 15, 0.22) 100%);
+    }
   }
 
   .hero-headline {
@@ -383,19 +401,46 @@
 
   .canvas-grade {
     background:
-      radial-gradient(ellipse 75% 65% at 60% 45%, transparent 15%, rgba(9, 11, 15, 0.42) 72%, rgba(9, 11, 15, 0.78) 100%),
-      linear-gradient(180deg, rgba(9, 11, 15, 0.35) 0%, transparent 22%, transparent 55%, rgba(9, 11, 15, 0.55) 100%),
-      linear-gradient(90deg, rgba(9, 11, 15, 0.55) 0%, transparent 38%, transparent 70%, rgba(9, 11, 15, 0.25) 100%);
+      radial-gradient(ellipse 80% 70% at 62% 44%, transparent 28%, rgba(9, 11, 15, 0.22) 78%, rgba(9, 11, 15, 0.5) 100%),
+      linear-gradient(180deg, rgba(9, 11, 15, 0.22) 0%, transparent 24%, transparent 58%, rgba(9, 11, 15, 0.35) 100%),
+      linear-gradient(90deg, rgba(9, 11, 15, 0.38) 0%, transparent 42%, transparent 72%, rgba(9, 11, 15, 0.15) 100%);
     mix-blend-mode: normal;
+  }
+
+  @media (max-width: 767.98px) {
+    .canvas-grade {
+      background:
+        radial-gradient(ellipse 90% 75% at 50% 42%, transparent 40%, rgba(9, 11, 15, 0.14) 85%, rgba(9, 11, 15, 0.32) 100%),
+        linear-gradient(180deg, rgba(9, 11, 15, 0.14) 0%, transparent 28%, transparent 60%, rgba(9, 11, 15, 0.28) 100%),
+        linear-gradient(90deg, rgba(9, 11, 15, 0.22) 0%, transparent 45%, transparent 100%);
+    }
   }
 
   .canvas-grade::after {
     content: "";
     position: absolute;
     inset: 0;
-    opacity: 0.07;
+    opacity: 0.055;
     background-image: url("/grain.svg");
     background-size: 160px 160px;
     mix-blend-mode: soft-light;
+  }
+
+  /* Mobile sticky CTA clearance — keeps content/CTAs above the fixed bar */
+  @media (max-width: 767.98px) {
+    .has-mobile-sticky {
+      padding-bottom: calc(var(--sticky-cta-h) + env(safe-area-inset-bottom, 0px));
+    }
+
+    .has-mobile-sticky #hero {
+      /* Keep full viewport feel but lift inner content above sticky */
+      min-height: 100svh;
+      box-sizing: border-box;
+      padding-bottom: calc(var(--sticky-cta-h) + env(safe-area-inset-bottom, 0px) + 0.75rem);
+    }
+
+    .has-mobile-sticky .site-footer {
+      padding-bottom: 1.5rem; /* outer wrapper already clears sticky */
+    }
   }
 }

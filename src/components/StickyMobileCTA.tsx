@@ -15,7 +15,7 @@ export const StickyMobileCTA: React.FC<StickyMobileCTAProps> = ({
 
   return (
     <div
-      className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t border-white/10 bg-[color-mix(in_srgb,var(--color-ink)_90%,transparent)] backdrop-blur-xl px-3 py-2.5 pb-[max(0.7rem,env(safe-area-inset-bottom))] shadow-[0_-12px_40px_rgba(0,0,0,0.45)]"
+      className="fixed inset-x-0 bottom-0 z-40 md:hidden border-t border-white/10 bg-[var(--color-ink)]/95 backdrop-blur-xl px-3 py-2.5 pb-[max(0.65rem,env(safe-area-inset-bottom))] shadow-[0_-12px_40px_rgba(0,0,0,0.45)]"
       role="region"
       aria-label="Quick contact actions"
     >
