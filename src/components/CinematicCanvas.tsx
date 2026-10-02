@@ -5,15 +5,18 @@ import { createEtiosTextures, buildToyotaEtiosGD } from './EtiosGDModel';
 export type InspectionAngle = 'front34' | 'side' | 'rear34' | 'frontClose';
 
 interface CinematicCanvasProps {
-  scrollProgress: number; // 0 (Hero) to 1 (Contact)
+  scrollProgress: number; // 0 (Hero) to 1 (end)
   inspectionMode?: boolean;
   inspectionAngle?: InspectionAngle;
+  /** When false, skip WebGL mount (reduced motion / low-power). */
+  enabled?: boolean;
 }
 
 export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
   scrollProgress,
   inspectionMode = false,
   inspectionAngle = 'front34',
+  enabled = true,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -208,6 +211,8 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
   }, [inspectionMode, inspectionAngle, scrollProgress, updateCameraTargets]);
 
   useEffect(() => {
+    if (!enabled) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -234,11 +239,12 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       alpha: false,
     });
     renderer.setSize(container.clientWidth, container.clientHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 1.75));
+    renderer.outputColorSpace = THREE.SRGBColorSpace;
     renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.1;
+    renderer.toneMappingExposure = 1.05;
     renderer.shadowMap.enabled = true;
-    renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+    renderer.shadowMap.type = THREE.PCFShadowMap;
     container.appendChild(renderer.domElement);
     rendererRef.current = renderer;
 
@@ -492,12 +498,14 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
 
     // 10. Natural Animation Loop
     let animationFrameId: number;
-    const clock = new THREE.Clock();
+    const timer = new THREE.Timer();
+    timer.connect(document);
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate);
-      const delta = clock.getDelta();
-      const elapsed = clock.getElapsedTime();
+      timer.update();
+      const delta = timer.getDelta();
+      const elapsed = timer.getElapsed();
 
       // Highway subtle suspension breathing (disabled in studio inspection)
       if (etiosGroupRef.current) {
@@ -536,12 +544,17 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       window.removeEventListener('mouseup', onMouseUp);
       window.removeEventListener('wheel', onWheel);
       resizeObserver.disconnect();
+      timer.dispose();
       renderer.dispose();
       if (container.contains(renderer.domElement)) {
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) {
+    return <div className="fixed inset-0 w-full h-full z-0 ambient-fallback" aria-hidden="true" />;
+  }
 
   return (
     <div
@@ -549,7 +562,7 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       className={`fixed inset-0 w-full h-full z-0 transition-opacity duration-700 ${
         inspectionMode ? 'pointer-events-auto cursor-grab active:cursor-grabbing' : 'pointer-events-none'
       }`}
-      aria-label="Cinematic 3D Toyota Etios GD View"
+      aria-hidden="true"
     />
   );
 };

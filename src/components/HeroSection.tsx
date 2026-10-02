@@ -1,134 +1,125 @@
-import React, { useState, useEffect } from 'react';
-import { Phone, ArrowDown } from 'lucide-react';
-import { CONTACT_DATA } from '../types';
+import React from 'react';
+import { Phone, MessageCircle } from 'lucide-react';
+import { CONTACT_DATA, telHref, whatsappHref } from '../lib/contact';
+import { BRAND } from '../lib/content';
 
 interface HeroSectionProps {
-  onContactClick: () => void;
-  onExploreClick: () => void;
+  onEnquiryClick: () => void;
 }
 
-export const HeroSection: React.FC<HeroSectionProps> = ({
-  onContactClick,
-  onExploreClick,
-}) => {
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    const timer = setTimeout(() => setMounted(true), 100);
-    return () => clearTimeout(timer);
-  }, []);
-
+export const HeroSection: React.FC<HeroSectionProps> = ({ onEnquiryClick }) => {
   return (
     <section
       id="hero"
-      className="relative min-h-screen w-full flex flex-col justify-between pt-32 pb-12 px-6 sm:px-12 z-10 pointer-events-none"
+      className="relative min-h-[100svh] w-full flex flex-col justify-between z-10 film-grain"
+      aria-labelledby="hero-heading"
     >
-      {/* Cinematic ambient vignette */}
-      <div className="absolute inset-0 bg-gradient-to-t from-[#08090d] via-transparent to-black/50 pointer-events-none -z-10" />
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_20%,rgba(8,9,13,0.75)_100%)] pointer-events-none -z-10" />
-
-      {/* Top Brand Sub-indicator */}
+      <div className="absolute inset-0 hero-vignette pointer-events-none" aria-hidden />
       <div
-        className={`w-full max-w-7xl mx-auto flex items-center justify-between transition-all duration-1000 ${
-          mounted ? 'opacity-100 translate-y-0' : 'opacity-0 -translate-y-4'
-        }`}
-      >
-        <div className="flex items-center gap-3">
-          <span className="w-2 h-2 rounded-full bg-[#d4af37]" />
-          <span className="text-xs uppercase tracking-[0.25em] text-white/70 font-medium">
-            Executive Travel & Transportation
-          </span>
+        className="absolute inset-x-0 bottom-0 h-28 sm:h-40 pointer-events-none bg-gradient-to-t from-[var(--color-ink)]/80 via-[var(--color-ink)]/35 to-transparent"
+        aria-hidden
+      />
+
+      <div className="relative flex-1 flex flex-col justify-between px-5 sm:px-8 lg:px-12 pt-28 sm:pt-32 pb-6 sm:pb-10">
+        <div className="max-w-7xl mx-auto w-full hero-enter" style={{ animationDelay: '40ms' }}>
+          <div className="inline-flex items-center gap-3 rounded-full border border-white/10 bg-black/45 px-3.5 py-1.5 backdrop-blur-md shadow-[0_8px_30px_rgba(0,0,0,0.3)]">
+            <span className="relative flex h-2 w-2" aria-hidden>
+              <span className="absolute inset-0 rounded-full bg-[var(--color-gold)] opacity-35 motion-safe:animate-ping" />
+              <span className="relative inline-flex h-2 w-2 rounded-full bg-[var(--color-gold)]" />
+            </span>
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-[0.24em] text-white/70">
+              Based in {BRAND.homeBase}
+            </span>
+          </div>
         </div>
 
-        <div className="hidden sm:flex items-center gap-2 text-xs text-white/50 tracking-widest uppercase font-mono">
-          <span>Tamil Nadu & South India</span>
+        <div className="max-w-7xl mx-auto w-full my-auto py-12 sm:py-16">
+          <p
+            className="font-display text-[13px] sm:text-sm tracking-[0.32em] uppercase text-[var(--color-gold)] mb-5 sm:mb-6 hero-enter"
+            style={{ animationDelay: '100ms' }}
+          >
+            {BRAND.name}
+          </p>
+
+          <h1
+            id="hero-heading"
+            className="hero-headline text-[var(--color-cream)] max-w-[14ch] sm:max-w-[16ch] text-balance hero-enter"
+            style={{ animationDelay: '160ms' }}
+          >
+            Travel from Srivilliputtur to <em>Anywhere in India</em>
+          </h1>
+
+          <p
+            className="mt-6 sm:mt-7 text-[15px] sm:text-lg md:text-xl text-[var(--color-muted)] max-w-xl leading-relaxed font-light hero-enter"
+            style={{ animationDelay: '240ms' }}
+          >
+            Quiet sedan journeys for families, pilgrims, and everyday travellers —
+            planned by phone or WhatsApp before you leave town.
+          </p>
+
+          <div
+            className="mt-9 sm:mt-10 flex flex-col sm:flex-row flex-wrap items-stretch sm:items-center gap-3 hero-enter"
+            style={{ animationDelay: '320ms' }}
+          >
+            <a href={telHref(CONTACT_DATA.phone1)} className="btn-primary min-h-12 sm:min-h-0">
+              <Phone className="w-4 h-4" aria-hidden />
+              Call now
+            </a>
+            <a
+              href={whatsappHref()}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="btn-whatsapp min-h-12 sm:min-h-0"
+            >
+              <MessageCircle className="w-4 h-4" aria-hidden />
+              WhatsApp
+            </a>
+            <button type="button" onClick={onEnquiryClick} className="btn-secondary min-h-12 sm:min-h-0">
+              Send an enquiry
+            </button>
+          </div>
+
+          <p
+            className="mt-5 text-xs sm:text-sm text-[var(--color-faint)] hero-enter"
+            style={{ animationDelay: '380ms' }}
+          >
+            <a
+              className="text-white/80 hover:text-[var(--color-gold)] font-mono tracking-wide transition-colors"
+              href={telHref(CONTACT_DATA.phone1)}
+            >
+              {CONTACT_DATA.formattedPhone1}
+            </a>
+            <span className="mx-2.5 text-white/20" aria-hidden>
+              ·
+            </span>
+            <a
+              className="text-white/80 hover:text-[var(--color-gold)] font-mono tracking-wide transition-colors"
+              href={telHref(CONTACT_DATA.phone2)}
+            >
+              {CONTACT_DATA.formattedPhone2}
+            </a>
+          </p>
         </div>
-      </div>
 
-      {/* Center Cinematic Typography */}
-      <div className="w-full max-w-7xl mx-auto my-auto py-12 flex flex-col items-start justify-center">
-        {/* Brand Name */}
-        <h2
-          className={`font-display text-sm sm:text-lg md:text-xl font-semibold tracking-[0.35em] text-[#d4af37] uppercase mb-4 transition-all duration-1000 delay-200 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6'
-          }`}
-        >
-          Sri Arumuga Travels
-        </h2>
-
-        {/* Main Headline */}
-        <h1
-          className={`font-display text-4xl sm:text-6xl md:text-7xl lg:text-8xl font-bold tracking-tight text-white leading-[1.05] max-w-4xl transition-all duration-1000 delay-300 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          Your Journey. <br />
-          <span className="text-shimmer">Our Responsibility.</span>
-        </h1>
-
-        {/* Supporting Line */}
-        <p
-          className={`mt-6 text-lg sm:text-2xl font-light text-white/80 max-w-2xl leading-relaxed tracking-wide transition-all duration-1000 delay-500 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
-        >
-          Comfortable journeys. Trusted service.
-        </p>
-
-        {/* CTAs & Direct Contact */}
         <div
-          className={`mt-10 flex flex-wrap items-center gap-5 sm:gap-6 pointer-events-auto transition-all duration-1000 delay-700 ${
-            mounted ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-8'
-          }`}
+          className="max-w-7xl mx-auto w-full flex items-end justify-between gap-4 hero-enter"
+          style={{ animationDelay: '460ms' }}
         >
-          <button
-            onClick={onContactClick}
-            className="px-8 py-4 rounded-sm bg-[#d4af37] text-black text-xs sm:text-sm uppercase tracking-[0.22em] font-bold shadow-[0_0_25px_rgba(212,175,55,0.3)] hover:bg-[#ebd06b] hover:shadow-[0_0_35px_rgba(212,175,55,0.45)] active:scale-95 transition-all duration-300"
+          <a
+            href="#services"
+            className="group inline-flex items-center gap-3 text-[10px] sm:text-[11px] uppercase tracking-[0.22em] text-white/45 hover:text-[var(--color-gold)] transition-colors"
           >
-            Contact Us
-          </button>
-
-          <button
-            onClick={onExploreClick}
-            className="px-8 py-4 rounded-sm border border-white/20 bg-black/40 backdrop-blur-md text-xs sm:text-sm uppercase tracking-[0.22em] font-semibold text-white hover:border-[#d4af37]/60 hover:text-[#d4af37] transition-all duration-300"
-          >
-            Explore
-          </button>
-
-          {/* Quick Direct Phone Access */}
-          <div className="hidden lg:flex items-center gap-3 ml-4 pl-6 border-l border-white/10 text-xs">
-            <Phone className="w-3.5 h-3.5 text-[#d4af37]" />
-            <div className="font-mono text-white/80 tracking-wider">
-              <a href={`tel:${CONTACT_DATA.phone1}`} className="hover:text-[#d4af37] transition-colors">
-                {CONTACT_DATA.phone1}
-              </a>
-              <span className="text-white/30 mx-2.5">/</span>
-              <a href={`tel:${CONTACT_DATA.phone2}`} className="hover:text-[#d4af37] transition-colors">
-                {CONTACT_DATA.phone2}
-              </a>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Bottom Scroll Prompt */}
-      <div
-        className={`w-full max-w-7xl mx-auto flex items-center justify-between pointer-events-auto transition-all duration-1000 delay-900 ${
-          mounted ? 'opacity-100' : 'opacity-0'
-        }`}
-      >
-        <button
-          onClick={onExploreClick}
-          className="flex items-center gap-3 text-xs uppercase tracking-[0.22em] text-white/50 hover:text-[#d4af37] transition-colors group"
-        >
-          <div className="w-6 h-10 rounded-full border border-white/20 group-hover:border-[#d4af37] flex items-start justify-center p-1.5 transition-colors">
-            <div className="w-1 h-2 rounded-full bg-[#d4af37] animate-bounce" />
-          </div>
-          <span>Scroll to Experience</span>
-        </button>
-
-        <div className="text-right text-[11px] uppercase tracking-[0.2em] text-white/40 font-mono">
-          <span>Toyota Etios GD • Executive Transit</span>
+            <span
+              className="w-5 h-9 rounded-full border border-white/20 group-hover:border-[var(--color-gold)]/60 flex items-start justify-center p-1.5 transition-colors"
+              aria-hidden
+            >
+              <span className="w-1 h-1.5 rounded-full bg-[var(--color-gold)] motion-safe:animate-bounce" />
+            </span>
+            Scroll to explore
+          </a>
+          <p className="hidden md:block text-[10px] uppercase tracking-[0.22em] text-white/30 max-w-[16rem] text-right leading-relaxed">
+            {BRAND.promise}
+          </p>
         </div>
       </div>
     </section>
