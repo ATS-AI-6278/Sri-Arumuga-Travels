@@ -1,6 +1,6 @@
 {
   "name": "Sri Arumuga Travels",
-  "description": "A premium, cinematic digital brand experience for Sri Arumuga Travels featuring immersive scroll-driven journey visualizer and seamless direct contact.",
+  "description": "Premium travel website for small-car and taxi journeys from Srivilliputtur, Tamil Nadu to destinations across India. Call, WhatsApp, and enquiry-led conversion.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }

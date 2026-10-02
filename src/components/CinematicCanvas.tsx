@@ -5,15 +5,18 @@ import { createEtiosTextures, buildToyotaEtiosGD } from './EtiosGDModel';
 export type InspectionAngle = 'front34' | 'side' | 'rear34' | 'frontClose';
 
 interface CinematicCanvasProps {
-  scrollProgress: number; // 0 (Hero) to 1 (Contact)
+  scrollProgress: number; // 0 (Hero) to 1 (end)
   inspectionMode?: boolean;
   inspectionAngle?: InspectionAngle;
+  /** When false, skip WebGL mount (reduced motion / low-power). */
+  enabled?: boolean;
 }
 
 export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
   scrollProgress,
   inspectionMode = false,
   inspectionAngle = 'front34',
+  enabled = true,
 }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const sceneRef = useRef<THREE.Scene | null>(null);
@@ -208,6 +211,8 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
   }, [inspectionMode, inspectionAngle, scrollProgress, updateCameraTargets]);
 
   useEffect(() => {
+    if (!enabled) return;
+
     const container = containerRef.current;
     if (!container) return;
 
@@ -541,7 +546,11 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
         container.removeChild(renderer.domElement);
       }
     };
-  }, []);
+  }, [enabled]);
+
+  if (!enabled) {
+    return <div className="fixed inset-0 w-full h-full z-0 ambient-fallback" aria-hidden="true" />;
+  }
 
   return (
     <div
@@ -549,7 +558,7 @@ export const CinematicCanvas: React.FC<CinematicCanvasProps> = ({
       className={`fixed inset-0 w-full h-full z-0 transition-opacity duration-700 ${
         inspectionMode ? 'pointer-events-auto cursor-grab active:cursor-grabbing' : 'pointer-events-none'
       }`}
-      aria-label="Cinematic 3D Toyota Etios GD View"
+      aria-hidden="true"
     />
   );
 };
