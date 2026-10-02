@@ -26,14 +26,13 @@ export const TrustSection: React.FC = () => {
         <Reveal delayMs={70} className="mt-10">
           <figure className="fleet-card card overflow-hidden">
             <div className="grid md:grid-cols-12 gap-0 items-stretch">
-              <div className="md:col-span-7 relative fleet-stage min-h-[14rem] sm:min-h-[16rem]">
-                <div className="fleet-car-shadow" aria-hidden />
+              <div className="md:col-span-7 relative min-h-[14rem] sm:min-h-[18rem] bg-[var(--color-ink)]">
                 <img
-                  src="/etios-gxd-grey-fleet.webp"
-                  alt="Indian-market Toyota Etios sedan in metallic grey"
-                  width={1573}
-                  height={876}
-                  className="fleet-car-img relative z-[1] w-full h-full object-contain object-bottom p-5 sm:p-7 pt-8 sm:pt-10"
+                  src="/fleet-scene.webp"
+                  alt="Dark metallic Toyota Etios sedan on the highway"
+                  width={2400}
+                  height={1350}
+                  className="relative z-[1] w-full h-full object-cover object-center min-h-[14rem]"
                   loading="lazy"
                   decoding="async"
                 />
@@ -46,8 +45,8 @@ export const TrustSection: React.FC = () => {
                   Etios sedan comfort
                 </h3>
                 <p className="text-[15px] text-[var(--color-muted)] leading-relaxed">
-                  India-market Toyota Etios — a calm cabin for highway stretches, luggage, elders,
-                  and the quiet between towns. The kind of journey that starts in Srivilliputtur.
+                  Dark metallic Etios sedan comfort for highway stretches — luggage, elders, and
+                  the quiet between towns. Journeys that start in Srivilliputtur.
                 </p>
               </figcaption>
             </div>

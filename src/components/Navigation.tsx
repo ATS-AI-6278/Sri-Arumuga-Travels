@@ -26,6 +26,7 @@ export const Navigation: React.FC<NavigationProps> = ({
   onMobileOpenChange,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
+  const solid = isScrolled || mobileOpen;
 
   useEffect(() => {
     const onScroll = () => setIsScrolled(window.scrollY > 16);
@@ -53,7 +54,7 @@ export const Navigation: React.FC<NavigationProps> = ({
     <>
       <header
         className={`fixed top-0 inset-x-0 z-50 transition-all duration-400 ${
-          isScrolled || mobileOpen
+          solid
             ? 'bg-[color-mix(in_srgb,var(--color-bg)_92%,white)]/95 backdrop-blur-xl border-b border-[var(--color-line)] shadow-[0_8px_30px_rgba(31,26,23,0.06)]'
             : 'bg-transparent border-b border-transparent'
         }`}
@@ -65,14 +66,28 @@ export const Navigation: React.FC<NavigationProps> = ({
             aria-label={`${BRAND.name} home`}
             onClick={() => onMobileOpenChange(false)}
           >
-            <div className="w-9 h-9 rounded-xl border border-[var(--color-accent)]/40 bg-[var(--color-surface)] flex items-center justify-center text-[var(--color-accent-text)] shadow-sm">
+            <div
+              className={`w-9 h-9 rounded-xl flex items-center justify-center shadow-sm ${
+                solid
+                  ? 'border border-[var(--color-accent)]/40 bg-[var(--color-surface)] text-[var(--color-accent-text)]'
+                  : 'border border-white/30 bg-white/10 text-[var(--color-accent-soft)] backdrop-blur-md'
+              }`}
+            >
               <span className="font-display text-sm font-bold">SA</span>
             </div>
             <div className="leading-tight">
-              <div className="font-display text-[15px] font-semibold tracking-wide text-[var(--color-ink)]">
+              <div
+                className={`font-display text-[15px] font-semibold tracking-wide ${
+                  solid ? 'text-[var(--color-ink)]' : 'text-white'
+                }`}
+              >
                 Sri Arumuga
               </div>
-              <div className="text-[10px] uppercase tracking-[0.18em] text-[var(--color-accent-text)] font-semibold">
+              <div
+                className={`text-[10px] uppercase tracking-[0.18em] font-semibold ${
+                  solid ? 'text-[var(--color-accent-text)]' : 'text-[var(--color-accent-soft)]'
+                }`}
+              >
                 Travels · Srivilliputtur
               </div>
             </div>
@@ -87,9 +102,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                   href={link.href}
                   aria-current={active ? 'true' : undefined}
                   className={`px-3 py-2 rounded-full text-sm font-medium transition-colors ${
-                    active
-                      ? 'text-[var(--color-accent-text)] bg-[var(--color-accent-soft)]'
-                      : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                    solid
+                      ? active
+                        ? 'text-[var(--color-accent-text)] bg-[var(--color-accent-soft)]'
+                        : 'text-[var(--color-muted)] hover:text-[var(--color-ink)] hover:bg-[var(--color-surface-2)]'
+                      : active
+                        ? 'text-white bg-white/15'
+                        : 'text-white/75 hover:text-white hover:bg-white/10'
                   }`}
                 >
                   {link.label}
@@ -101,9 +120,16 @@ export const Navigation: React.FC<NavigationProps> = ({
           <div className="flex items-center gap-2">
             <a
               href={telHref(CONTACT_DATA.phone1)}
-              className="hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-full border border-[var(--color-line)] bg-[var(--color-surface)] text-sm font-medium text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]"
+              className={`hidden md:inline-flex items-center gap-2 px-3 py-2 rounded-full text-sm font-medium ${
+                solid
+                  ? 'border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink-soft)] hover:border-[var(--color-accent)]'
+                  : 'border border-white/25 bg-white/10 text-white backdrop-blur-md hover:bg-white/18'
+              }`}
             >
-              <Phone className="w-3.5 h-3.5 text-[var(--color-accent)]" aria-hidden />
+              <Phone
+                className={`w-3.5 h-3.5 ${solid ? 'text-[var(--color-accent)]' : 'text-[var(--color-accent-soft)]'}`}
+                aria-hidden
+              />
               <span className="tabular-nums">{CONTACT_DATA.formattedPhone1}</span>
             </a>
             <button
@@ -115,7 +141,11 @@ export const Navigation: React.FC<NavigationProps> = ({
             </button>
             <button
               type="button"
-              className="lg:hidden p-2.5 rounded-xl border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]"
+              className={`lg:hidden p-2.5 rounded-xl ${
+                solid
+                  ? 'border border-[var(--color-line)] bg-[var(--color-surface)] text-[var(--color-ink)]'
+                  : 'border border-white/25 bg-white/10 text-white backdrop-blur-md'
+              }`}
               aria-expanded={mobileOpen}
               aria-controls="mobile-nav"
               aria-label={mobileOpen ? 'Close menu' : 'Open menu'}

@@ -214,6 +214,25 @@
     color: var(--color-accent-text);
   }
 
+  .btn-on-dark {
+    color: #fff;
+    background: rgba(255, 253, 249, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.35);
+    backdrop-filter: blur(8px);
+  }
+  .btn-on-dark:hover {
+    background: rgba(255, 253, 249, 0.22);
+    border-color: rgba(255, 255, 255, 0.55);
+    color: #fff;
+  }
+
+  .eyebrow-on-dark {
+    color: var(--color-accent-soft);
+  }
+  .eyebrow-on-dark .eyebrow-dot {
+    background: var(--color-accent-soft);
+  }
+
   .field-label {
     @apply block text-xs font-semibold tracking-wide mb-1.5;
     color: var(--color-ink-soft);
@@ -330,84 +349,50 @@
     }
   }
 
-  /* Photographic Etios — hero & fleet */
-  .hero-car {
-    isolation: isolate;
-    padding-bottom: 0.5rem;
+  /* Cinematic full-bleed hero scene */
+  .hero-cinematic {
+    background: #1a1614;
   }
-  .hero-car-ground {
+  .hero-scene {
+    pointer-events: none;
+  }
+  .hero-scene-img {
     position: absolute;
-    left: 6%;
-    right: 4%;
-    bottom: 8%;
-    height: 28%;
-    border-radius: 50%;
-    background:
-      radial-gradient(ellipse at center, rgba(232, 217, 200, 0.95) 0%, rgba(246, 241, 232, 0) 72%);
-    z-index: 0;
-  }
-  .hero-car-glow {
-    position: absolute;
-    inset: 12% 4% 18% 8%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at 60% 40%, rgba(184, 92, 56, 0.16), transparent 70%);
-    filter: blur(32px);
-    z-index: 0;
-  }
-  .hero-car-shadow {
-    position: absolute;
-    left: 14%;
-    right: 10%;
-    bottom: 10%;
-    height: 12%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.32), transparent 70%);
-    filter: blur(12px);
-    z-index: 0;
-  }
-  .hero-car-img {
-    filter: drop-shadow(0 22px 36px rgba(31, 26, 23, 0.14));
-    transform: translateY(0.35rem);
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: 62% 55%;
   }
   @media (min-width: 1024px) {
-    .hero-car-img {
-      transform: translate3d(4%, 0.65rem, 0) scale(1.06);
-      transform-origin: 70% bottom;
-    }
-    .hero-car-shadow {
-      left: 18%;
-      right: 6%;
-      bottom: 8%;
+    .hero-scene-img {
+      object-position: 68% 50%;
     }
   }
-  @media (max-width: 639.98px) {
-    .hero-car {
-      margin-top: 0.25rem;
-      max-width: 22rem;
-    }
-    .hero-car-img {
-      transform: translateY(0.15rem) scale(1.02);
-    }
+  .hero-scene-shade {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(
+        105deg,
+        rgba(18, 14, 12, 0.88) 0%,
+        rgba(18, 14, 12, 0.72) 32%,
+        rgba(18, 14, 12, 0.35) 55%,
+        rgba(18, 14, 12, 0.2) 72%,
+        rgba(18, 14, 12, 0.45) 100%
+      ),
+      linear-gradient(to top, rgba(18, 14, 12, 0.55) 0%, transparent 42%);
+  }
+  .hero-scene-grain {
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    background-image: url("/grain.svg");
+    background-size: 180px 180px;
+    mix-blend-mode: overlay;
   }
 
   .fleet-stage {
-    background:
-      linear-gradient(155deg, #faf6ef 0%, #f1e8dc 50%, #e8dccf 100%);
-    min-height: 14rem;
+    background: var(--color-ink);
   }
-  .fleet-car-shadow {
-    position: absolute;
-    left: 16%;
-    right: 16%;
-    bottom: 14%;
-    height: 14%;
-    border-radius: 50%;
-    background: radial-gradient(ellipse at center, rgba(31, 26, 23, 0.2), transparent 70%);
-    filter: blur(9px);
-    z-index: 0;
-  }
-  .fleet-car-img {
-    filter: drop-shadow(0 14px 22px rgba(31, 26, 23, 0.11));
-  }
-
 }
