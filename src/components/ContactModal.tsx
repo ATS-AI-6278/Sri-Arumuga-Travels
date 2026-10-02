@@ -29,46 +29,41 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, onE
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-black/75 backdrop-blur-md">
-      <button
-        type="button"
-        className="absolute inset-0 cursor-default"
-        aria-label="Close dialog overlay"
-        onClick={onClose}
-      />
+    <div className="fixed inset-0 z-50 flex items-end sm:items-center justify-center p-0 sm:p-6 bg-[var(--color-ink)]/35 backdrop-blur-sm">
+      <button type="button" className="absolute inset-0 cursor-default" aria-label="Close dialog overlay" onClick={onClose} />
       <div
         role="dialog"
         aria-modal="true"
         aria-labelledby="contact-modal-title"
         aria-describedby="contact-modal-desc"
-        className="relative w-full max-w-md rounded-t-xl sm:rounded-md bg-[var(--color-panel-elevated)] border border-[var(--color-gold)]/35 p-6 sm:p-8 shadow-2xl"
+        className="relative w-full max-w-md rounded-t-3xl sm:rounded-3xl bg-[var(--color-surface)] border border-[var(--color-line)] p-6 sm:p-8 shadow-[var(--shadow-lift)]"
       >
         <button
           ref={closeRef}
           type="button"
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-sm text-white/50 hover:text-white hover:bg-white/10"
+          className="absolute top-4 right-4 p-2 rounded-full text-[var(--color-muted)] hover:bg-[var(--color-bg-deep)] hover:text-[var(--color-ink)]"
           aria-label="Close"
         >
           <X className="w-5 h-5" />
         </button>
 
-        <p className="text-[11px] uppercase tracking-[0.24em] text-[var(--color-gold)] font-semibold">
+        <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent-text)]">
           Direct contact
         </p>
-        <h3 id="contact-modal-title" className="font-display text-2xl text-white mt-2">
+        <h3 id="contact-modal-title" className="font-display text-2xl text-[var(--color-ink)] mt-2">
           Sri Arumuga Travels
         </h3>
         <p id="contact-modal-desc" className="text-sm text-[var(--color-muted)] mt-1">
-          Call, WhatsApp, or jump to the enquiry form.
+          Call, WhatsApp, or open the enquiry form.
         </p>
 
         <div className="mt-6 space-y-3">
-          <a href={telHref(CONTACT_DATA.phone1)} className="btn-primary w-full">
+          <a href={telHref(CONTACT_DATA.phone1)} className="btn btn-primary w-full min-h-12">
             <Phone className="w-4 h-4" aria-hidden />
             Call {CONTACT_DATA.formattedPhone1}
           </a>
-          <a href={telHref(CONTACT_DATA.phone2)} className="btn-secondary w-full">
+          <a href={telHref(CONTACT_DATA.phone2)} className="btn btn-secondary w-full min-h-12">
             <Phone className="w-4 h-4" aria-hidden />
             Call {CONTACT_DATA.formattedPhone2}
           </a>
@@ -76,14 +71,14 @@ export const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose, onE
             href={whatsappHref()}
             target="_blank"
             rel="noopener noreferrer"
-            className="btn-whatsapp w-full"
+            className="btn btn-whatsapp w-full min-h-12"
           >
             <MessageCircle className="w-4 h-4" aria-hidden />
             WhatsApp us
           </a>
           <button
             type="button"
-            className="btn-secondary w-full"
+            className="btn btn-ghost w-full min-h-12"
             onClick={() => {
               onClose();
               onEnquire();

@@ -7,38 +7,66 @@ const ICONS = [Home, Armchair, PhoneCall, MessageSquareHeart];
 
 export const TrustSection: React.FC = () => {
   return (
-    <section id="trust" className="section-shell section-band z-10" aria-labelledby="trust-heading">
-      <div className="max-w-7xl mx-auto">
+    <section id="trust" className="section-shell section-surface" aria-labelledby="trust-heading">
+      <div className="max-w-6xl mx-auto">
         <Reveal>
-          <div className="section-marker">
-            <span className="section-marker-line" aria-hidden />
-            <span className="section-marker-text">Why travellers choose us</span>
-          </div>
-          <h2
-            id="trust-heading"
-            className="font-display text-[1.85rem] sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--color-cream)] max-w-3xl text-balance leading-[1.12]"
-          >
+          <p className="eyebrow mb-4">
+            <span className="eyebrow-dot" aria-hidden />
+            Why travellers choose us
+          </p>
+          <h2 id="trust-heading" className="display-title max-w-3xl">
             A clear conversation before every journey.
           </h2>
-          <p className="mt-5 max-w-2xl text-[var(--color-muted)] text-base sm:text-lg font-light leading-relaxed">
+          <p className="lede mt-4">
             Steady coordination, a comfortable sedan, and plain answers when you call —
             so you can leave with a quiet mind.
           </p>
+        </Reveal>
+
+        <Reveal delayMs={70} className="mt-10">
+          <figure className="fleet-card card overflow-hidden">
+            <div className="grid md:grid-cols-12 gap-0 items-stretch">
+              <div className="md:col-span-7 relative fleet-stage min-h-[14rem] sm:min-h-[16rem]">
+                <div className="fleet-car-shadow" aria-hidden />
+                <img
+                  src="/etios-gxd-grey-fleet.webp"
+                  alt="Indian-market Toyota Etios sedan in a soft grey finish"
+                  width={1589}
+                  height={884}
+                  className="fleet-car-img relative z-[1] w-full h-full object-contain object-center p-6 sm:p-8"
+                  loading="lazy"
+                  decoding="async"
+                />
+              </div>
+              <figcaption className="md:col-span-5 flex flex-col justify-center gap-3 p-6 sm:p-8 border-t md:border-t-0 md:border-l border-[var(--color-line)] bg-[var(--color-surface)]">
+                <p className="text-xs font-bold uppercase tracking-[0.16em] text-[var(--color-accent-text)]">
+                  On the road
+                </p>
+                <h3 className="font-display text-2xl text-[var(--color-ink)] leading-snug">
+                  Toyota Etios sedan comfort
+                </h3>
+                <p className="text-[15px] text-[var(--color-muted)] leading-relaxed">
+                  A calm cabin for highway stretches — room for luggage, elders, and the long quiet
+                  between towns. The kind of sedan journey that starts in Srivilliputtur.
+                </p>
+              </figcaption>
+            </div>
+          </figure>
         </Reveal>
 
         <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-4 sm:gap-5">
           {TRUST_POINTS.map((point, i) => {
             const Icon = ICONS[i] ?? Home;
             return (
-              <Reveal key={point.title} delayMs={60 + i * 70}>
-                <article className="panel panel-interactive p-6 sm:p-8 h-full">
+              <Reveal key={point.title} delayMs={50 + i * 60}>
+                <article className="card card-hover p-6 sm:p-7 h-full">
                   <div className="flex items-start gap-4">
-                    <div className="w-10 h-10 rounded-md bg-white/[0.04] border border-white/10 flex items-center justify-center text-[var(--color-gold)] shrink-0">
-                      <Icon className="w-[18px] h-[18px]" aria-hidden strokeWidth={1.75} />
+                    <div className="w-11 h-11 rounded-2xl bg-[var(--color-accent-soft)] text-[var(--color-accent-text)] flex items-center justify-center shrink-0">
+                      <Icon className="w-5 h-5" aria-hidden strokeWidth={1.75} />
                     </div>
                     <div>
-                      <h3 className="font-display text-xl text-white tracking-wide">{point.title}</h3>
-                      <p className="mt-2.5 text-sm sm:text-[15px] text-[var(--color-muted)] leading-relaxed">
+                      <h3 className="font-display text-xl text-[var(--color-ink)]">{point.title}</h3>
+                      <p className="mt-2 text-[15px] text-[var(--color-muted)] leading-relaxed">
                         {point.description}
                       </p>
                     </div>
@@ -49,18 +77,18 @@ export const TrustSection: React.FC = () => {
           })}
         </div>
 
-        <Reveal delayMs={100} className="mt-14">
-          <div className="panel-strong p-7 sm:p-10">
-            <h3 className="font-display text-2xl sm:text-3xl text-white mb-8 tracking-tight">
+        <Reveal delayMs={80} className="mt-12">
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-line)] bg-[var(--color-bg-deep)] p-7 sm:p-10">
+            <h3 className="font-display text-2xl sm:text-3xl text-[var(--color-ink)] mb-8">
               How a trip usually begins
             </h3>
-            <ol className="grid grid-cols-1 md:grid-cols-3 gap-8 md:gap-10">
+            <ol className="grid grid-cols-1 md:grid-cols-3 gap-8">
               {HOW_IT_WORKS.map((item) => (
-                <li key={item.step} className="relative">
-                  <span className="font-mono text-[11px] tracking-[0.22em] text-[var(--color-gold)]">
+                <li key={item.step}>
+                  <span className="text-xs font-bold tracking-[0.16em] text-[var(--color-accent-text)]">
                     {item.step}
                   </span>
-                  <h4 className="mt-2.5 font-display text-xl text-white">{item.title}</h4>
+                  <h4 className="mt-2 font-display text-xl text-[var(--color-ink)]">{item.title}</h4>
                   <p className="mt-2 text-sm text-[var(--color-muted)] leading-relaxed">{item.description}</p>
                 </li>
               ))}

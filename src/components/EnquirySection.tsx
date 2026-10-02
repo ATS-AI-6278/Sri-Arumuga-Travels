@@ -61,7 +61,6 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
   const [statusMessage, setStatusMessage] = useState('');
 
   useEffect(() => {
-    // Sync destination from destination tiles (including clearing for “Anywhere”).
     setForm((prev) => ({ ...prev, destination: initialDestination }));
     setErrors((prev) => {
       if (!prev.destination) return prev;
@@ -86,11 +85,9 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
   };
 
   const focusFirstError = (nextErrors: FieldErrors) => {
-    const order: (keyof FieldErrors)[] = ['name', 'phone', 'destination'];
-    for (const key of order) {
+    for (const key of ['name', 'phone', 'destination'] as const) {
       if (!nextErrors[key]) continue;
-      const el = document.getElementById(`${formId}-${key === 'destination' ? 'destination' : key}`);
-      el?.focus();
+      document.getElementById(`${formId}-${key}`)?.focus();
       break;
     }
   };
@@ -110,12 +107,10 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
     setStatusMessage('Preparing your WhatsApp enquiry…');
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 450));
-      const message = buildEnquiryWhatsAppMessage(form);
-      const href = whatsappHref(message);
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      const href = whatsappHref(buildEnquiryWhatsAppMessage(form));
       const popup = window.open(href, '_blank', 'noopener,noreferrer');
       if (!popup) {
-        // Popup blocked — navigate same tab as reliable fallback.
         window.location.assign(href);
         return;
       }
@@ -130,233 +125,228 @@ export const EnquirySection: React.FC<EnquirySectionProps> = ({
   };
 
   return (
-    <section id="enquire" className="section-shell section-band z-10" aria-labelledby="enquire-heading">
-      <div className="max-w-7xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+    <section id="enquire" className="section-shell section-surface" aria-labelledby="enquire-heading">
+      <div className="max-w-6xl mx-auto grid lg:grid-cols-12 gap-8 lg:gap-12 items-start">
         <div className="lg:col-span-5">
           <Reveal>
-          <div className="section-marker">
-            <span className="section-marker-line" aria-hidden />
-            <span className="section-marker-text">Enquire</span>
-          </div>
-          <h2
-            id="enquire-heading"
-            className="font-display text-3xl sm:text-4xl md:text-5xl font-semibold tracking-tight text-[var(--color-cream)] text-balance"
-          >
-            Tell us where you are headed.
-          </h2>
-          <p className="mt-4 text-[var(--color-muted)] text-base sm:text-lg font-light leading-relaxed">
-            Fill in the basics and we will open WhatsApp with a ready message to our travel desk.
-            Prefer to talk? Call either number — we are happy to plan by phone.
-          </p>
-
+            <p className="eyebrow mb-4">
+              <span className="eyebrow-dot" aria-hidden />
+              Enquire
+            </p>
+            <h2 id="enquire-heading" className="display-title">
+              Tell us where you are headed.
+            </h2>
+            <p className="lede mt-4">
+              Fill in the basics and we will open WhatsApp with a ready message.
+              Prefer to talk? Call either number.
+            </p>
           </Reveal>
-          <Reveal delayMs={80} className="mt-8 space-y-3">
+
+          <Reveal delayMs={70} className="mt-8 space-y-3">
             <a
               href={telHref(CONTACT_DATA.phone1)}
-              className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors"
+              className="card flex items-center justify-between p-4 hover:border-[var(--color-accent)] transition-colors"
             >
               <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-[var(--color-gold)]">Primary</p>
-                <p className="font-mono text-lg text-white mt-1">{CONTACT_DATA.formattedPhone1}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-accent-text)]">
+                  Primary
+                </p>
+                <p className="mt-1 text-lg font-semibold tabular-nums text-[var(--color-ink)]">
+                  {CONTACT_DATA.formattedPhone1}
+                </p>
               </div>
-              <Phone className="w-5 h-5 text-[var(--color-gold)]" aria-hidden />
+              <Phone className="w-5 h-5 text-[var(--color-accent)]" aria-hidden />
             </a>
             <a
               href={telHref(CONTACT_DATA.phone2)}
-              className="panel flex items-center justify-between p-4 hover:border-[var(--color-gold)]/40 transition-colors"
+              className="card flex items-center justify-between p-4 hover:border-[var(--color-accent)] transition-colors"
             >
               <div>
-                <p className="text-[11px] uppercase tracking-[0.2em] text-white/45">Secondary</p>
-                <p className="font-mono text-lg text-white mt-1">{CONTACT_DATA.formattedPhone2}</p>
+                <p className="text-xs font-semibold uppercase tracking-wide text-[var(--color-faint)]">
+                  Secondary
+                </p>
+                <p className="mt-1 text-lg font-semibold tabular-nums text-[var(--color-ink)]">
+                  {CONTACT_DATA.formattedPhone2}
+                </p>
               </div>
-              <Phone className="w-5 h-5 text-white/50" aria-hidden />
+              <Phone className="w-5 h-5 text-[var(--color-muted)]" aria-hidden />
             </a>
           </Reveal>
         </div>
 
         <div className="lg:col-span-7">
-          <Reveal delayMs={100}>
-          <form
-            ref={formRef}
-            onSubmit={handleSubmit}
-            className="panel-strong p-6 sm:p-8 space-y-5"
-            noValidate
-            aria-describedby={`${formId}-status`}
-          >
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="field-label" htmlFor={`${formId}-name`}>
-                  Your name *
-                </label>
-                <input
-                  id={`${formId}-name`}
-                  name="name"
-                  className="field-input"
-                  autoComplete="name"
-                  value={form.name}
-                  onChange={(e) => update('name', e.target.value)}
-                  aria-invalid={Boolean(errors.name)}
-                  aria-describedby={errors.name ? `${formId}-name-err` : undefined}
-                  required
-                />
-                {errors.name && (
-                  <p id={`${formId}-name-err`} className="field-error" role="alert">
-                    {errors.name}
-                  </p>
-                )}
-              </div>
-              <div>
-                <label className="field-label" htmlFor={`${formId}-phone`}>
-                  Mobile number *
-                </label>
-                <input
-                  id={`${formId}-phone`}
-                  name="phone"
-                  className="field-input"
-                  inputMode="tel"
-                  autoComplete="tel"
-                  placeholder="10-digit number"
-                  value={form.phone}
-                  onChange={(e) => update('phone', e.target.value)}
-                  aria-invalid={Boolean(errors.phone)}
-                  aria-describedby={errors.phone ? `${formId}-phone-err` : undefined}
-                  required
-                />
-                {errors.phone && (
-                  <p id={`${formId}-phone-err`} className="field-error" role="alert">
-                    {errors.phone}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="field-label" htmlFor={`${formId}-pickup`}>
-                  Pickup
-                </label>
-                <input
-                  id={`${formId}-pickup`}
-                  name="pickup"
-                  className="field-input"
-                  value={form.pickup}
-                  onChange={(e) => update('pickup', e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="field-label" htmlFor={`${formId}-destination`}>
-                  Destination *
-                </label>
-                <input
-                  id={`${formId}-destination`}
-                  name="destination"
-                  className="field-input"
-                  placeholder="City, town, or landmark"
-                  value={form.destination}
-                  onChange={(e) => update('destination', e.target.value)}
-                  aria-invalid={Boolean(errors.destination)}
-                  aria-describedby={errors.destination ? `${formId}-dest-err` : undefined}
-                  required
-                />
-                {errors.destination && (
-                  <p id={`${formId}-dest-err`} className="field-error" role="alert">
-                    {errors.destination}
-                  </p>
-                )}
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-4">
-              <div>
-                <label className="field-label" htmlFor={`${formId}-date`}>
-                  Travel date / timing
-                </label>
-                <input
-                  id={`${formId}-date`}
-                  name="travelDate"
-                  className="field-input"
-                  placeholder="e.g. 12 Oct morning / flexible"
-                  value={form.travelDate}
-                  onChange={(e) => update('travelDate', e.target.value)}
-                />
-              </div>
-              <div>
-                <label className="field-label" htmlFor={`${formId}-passengers`}>
-                  Passengers
-                </label>
-                <input
-                  id={`${formId}-passengers`}
-                  name="passengers"
-                  className="field-input"
-                  placeholder="e.g. 3 adults, 1 child"
-                  value={form.passengers}
-                  onChange={(e) => update('passengers', e.target.value)}
-                />
-              </div>
-            </div>
-
-            <div>
-              <label className="field-label" htmlFor={`${formId}-notes`}>
-                Anything else we should know?
-              </label>
-              <textarea
-                id={`${formId}-notes`}
-                name="notes"
-                className="field-input min-h-[96px] resize-y"
-                value={form.notes}
-                onChange={(e) => update('notes', e.target.value)}
-              />
-            </div>
-
-            <div
-              id={`${formId}-status`}
-              role="status"
-              aria-live="polite"
-              className={`rounded-sm px-4 py-3 text-sm flex items-start gap-2 ${
-                status === 'success'
-                  ? 'bg-emerald-950/50 border border-emerald-500/30 text-emerald-100'
-                  : status === 'error'
-                    ? 'bg-red-950/40 border border-red-400/30 text-red-100'
-                    : status === 'loading'
-                      ? 'bg-white/5 border border-white/10 text-white/75'
-                      : 'bg-transparent border border-transparent text-[var(--color-faint)]'
-              }`}
+          <Reveal delayMs={90}>
+            <form
+              ref={formRef}
+              onSubmit={handleSubmit}
+              className="card p-6 sm:p-8 space-y-5"
+              noValidate
+              aria-describedby={`${formId}-status`}
             >
-              {status === 'loading' && <Loader2 className="w-4 h-4 mt-0.5 animate-spin shrink-0" aria-hidden />}
-              {status === 'success' && <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
-              {status === 'error' && <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
-              <span>
-                {statusMessage ||
-                  'No booking account required — your enquiry goes straight to WhatsApp.'}
-              </span>
-            </div>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-name`}>
+                    Your name *
+                  </label>
+                  <input
+                    id={`${formId}-name`}
+                    className="field-input"
+                    autoComplete="name"
+                    value={form.name}
+                    onChange={(e) => update('name', e.target.value)}
+                    aria-invalid={Boolean(errors.name)}
+                    required
+                  />
+                  {errors.name && (
+                    <p className="field-error" role="alert">
+                      {errors.name}
+                    </p>
+                  )}
+                </div>
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-phone`}>
+                    Mobile number *
+                  </label>
+                  <input
+                    id={`${formId}-phone`}
+                    className="field-input"
+                    inputMode="tel"
+                    autoComplete="tel"
+                    placeholder="10-digit number"
+                    value={form.phone}
+                    onChange={(e) => update('phone', e.target.value)}
+                    aria-invalid={Boolean(errors.phone)}
+                    required
+                  />
+                  {errors.phone && (
+                    <p className="field-error" role="alert">
+                      {errors.phone}
+                    </p>
+                  )}
+                </div>
+              </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-1">
-              <button type="submit" className="btn-primary flex-1" disabled={status === 'loading'}>
-                {status === 'loading' ? (
-                  <>
-                    <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
-                    Preparing…
-                  </>
-                ) : (
-                  <>
-                    <MessageCircle className="w-4 h-4" aria-hidden />
-                    Send via WhatsApp
-                  </>
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-pickup`}>
+                    Pickup
+                  </label>
+                  <input
+                    id={`${formId}-pickup`}
+                    className="field-input"
+                    value={form.pickup}
+                    onChange={(e) => update('pickup', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-destination`}>
+                    Destination *
+                  </label>
+                  <input
+                    id={`${formId}-destination`}
+                    className="field-input"
+                    placeholder="City, town, or landmark"
+                    value={form.destination}
+                    onChange={(e) => update('destination', e.target.value)}
+                    aria-invalid={Boolean(errors.destination)}
+                    required
+                  />
+                  {errors.destination && (
+                    <p className="field-error" role="alert">
+                      {errors.destination}
+                    </p>
+                  )}
+                </div>
+              </div>
+
+              <div className="grid sm:grid-cols-2 gap-4">
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-date`}>
+                    Travel date / timing
+                  </label>
+                  <input
+                    id={`${formId}-date`}
+                    className="field-input"
+                    placeholder="e.g. 12 Oct morning / flexible"
+                    value={form.travelDate}
+                    onChange={(e) => update('travelDate', e.target.value)}
+                  />
+                </div>
+                <div>
+                  <label className="field-label" htmlFor={`${formId}-passengers`}>
+                    Passengers
+                  </label>
+                  <input
+                    id={`${formId}-passengers`}
+                    className="field-input"
+                    placeholder="e.g. 3 adults, 1 child"
+                    value={form.passengers}
+                    onChange={(e) => update('passengers', e.target.value)}
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="field-label" htmlFor={`${formId}-notes`}>
+                  Anything else we should know?
+                </label>
+                <textarea
+                  id={`${formId}-notes`}
+                  className="field-input min-h-[96px] resize-y"
+                  value={form.notes}
+                  onChange={(e) => update('notes', e.target.value)}
+                />
+              </div>
+
+              <div
+                id={`${formId}-status`}
+                role="status"
+                aria-live="polite"
+                className={`rounded-[var(--radius-sm)] px-4 py-3 text-sm flex items-start gap-2 ${
+                  status === 'success'
+                    ? 'bg-[var(--color-success-bg)] text-[var(--color-whatsapp-hover)]'
+                    : status === 'error'
+                      ? 'bg-[var(--color-error-bg)] text-[var(--color-error)]'
+                      : status === 'loading'
+                        ? 'bg-[var(--color-bg-deep)] text-[var(--color-muted)]'
+                        : 'text-[var(--color-faint)]'
+                }`}
+              >
+                {status === 'loading' && <Loader2 className="w-4 h-4 mt-0.5 animate-spin shrink-0" aria-hidden />}
+                {status === 'success' && <CheckCircle2 className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
+                {status === 'error' && <AlertCircle className="w-4 h-4 mt-0.5 shrink-0" aria-hidden />}
+                <span>
+                  {statusMessage ||
+                    'No booking account required — your enquiry goes straight to WhatsApp.'}
+                </span>
+              </div>
+
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button type="submit" className="btn btn-primary flex-1 min-h-12" disabled={status === 'loading'}>
+                  {status === 'loading' ? (
+                    <>
+                      <Loader2 className="w-4 h-4 animate-spin" aria-hidden />
+                      Preparing…
+                    </>
+                  ) : (
+                    <>
+                      <MessageCircle className="w-4 h-4" aria-hidden />
+                      Send via WhatsApp
+                    </>
+                  )}
+                </button>
+                {status === 'success' && (
+                  <a
+                    href={whatsappHref(buildEnquiryWhatsAppMessage(form))}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="btn btn-whatsapp flex-1 min-h-12"
+                  >
+                    Open WhatsApp again
+                  </a>
                 )}
-              </button>
-              {status === 'success' && (
-                <a
-                  href={whatsappHref(buildEnquiryWhatsAppMessage(form))}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="btn-whatsapp flex-1"
-                >
-                  Open WhatsApp again
-                </a>
-              )}
-            </div>
-          </form>
+              </div>
+            </form>
           </Reveal>
         </div>
       </div>

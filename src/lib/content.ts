@@ -29,7 +29,7 @@ export const SERVICES = [
     id: 'local',
     title: 'Local & day trips',
     description:
-      'Short hops around Srivilliputtur, Madurai, and nearby towns when you simply need a reliable car for the day.',
+      'Short hops around Srivilliputtur, Madurai, and nearby towns when you need a reliable car for the day.',
   },
 ] as const;
 
